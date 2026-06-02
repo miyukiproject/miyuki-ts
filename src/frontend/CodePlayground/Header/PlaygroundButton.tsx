@@ -1,32 +1,74 @@
-import { JSX } from "react";
-import { PlaygroundViews } from "../../model/common";
+import { JSX, MouseEventHandler } from "react";
+import { usePlayground } from "../../hooks/usePlayground";
+import { CodeIcon, PencilIcon, TerminalIcon } from "../../icons/Icons";
 import { useTranslation } from "react-i18next";
 
-type ButtonProps = {
-  translationKey: string;
+type BaseButtonProps = {
+  text: string;
   icon: JSX.Element;
-  view: PlaygroundViews;
-  activeView: PlaygroundViews;
-  setActiveView: (view: PlaygroundViews) => void;
+  isActive: boolean;
+  onClick: MouseEventHandler<HTMLButtonElement>;
 };
 
-export const PlaygroundButton = ({
-  translationKey,
-  icon,
-  view,
-  activeView,
-  setActiveView,
-}: ButtonProps) => {
-  const { t } = useTranslation();
+const BaseButton = ({ text, icon, isActive, onClick }: BaseButtonProps) => {
   return (
     <button
-      onClick={() => setActiveView(view)}
+      onClick={onClick}
       className={
         "flex items-center gap-1 px-2 py-1 rounded hover:bg-gray-50 transition " +
-        (activeView === view ? " border-x border-t bg-gray-100" : "")
-      }>
+        (isActive ? " border-x border-t bg-gray-100" : "")
+      }
+    >
       {icon}
-      <span className="text-mumuki-teal">{t(translationKey)}</span>
+      <span className="text-mumuki-teal">{text}</span>
     </button>
+  );
+};
+
+export const EditorButton = () => {
+  const { t } = useTranslation()
+  const { playgroundView, changeToEditor } = usePlayground();
+
+  return (
+    <BaseButton
+      text={t("solution")}
+      icon={
+        <PencilIcon width={15} height={15} className="fill-mumuki-teal" />
+      }
+      isActive={playgroundView === "editor"}
+      onClick={changeToEditor}
+    />
+  );
+};
+
+export const ConsoleButton = () => {
+  const { t } = useTranslation()
+  const { playgroundView, changeToConsole } = usePlayground();
+
+  return (
+    <BaseButton
+      text={t("console")}
+      icon={
+        <CodeIcon width={15} height={15} className="fill-mumuki-teal" />
+      }
+      isActive={playgroundView === "console"}
+      onClick={changeToConsole}
+    />
+  );
+};
+
+export const LibraryButton = () => {
+  const { t } = useTranslation()
+  const { playgroundView, changeToLibrary } = usePlayground();
+
+  return (
+    <BaseButton
+      text={t("library")}
+      icon={
+        <TerminalIcon width={15} height={15} className="fill-mumuki-teal" />
+      }
+      isActive={playgroundView === "library"}
+      onClick={changeToLibrary}
+    />
   );
 };
