@@ -1,46 +1,39 @@
 import { PlayIcon } from "../icons/Icons";
-import { PlaygroundViews } from "../model/common";
 import Console from "./Console/Console";
 import Editor from "./Editor/Editor";
 import Library from "./Library";
-import { usePlayground } from "./PlaygroundContext";
+import { usePlayground } from "../hooks/usePlayground";
+import { PlaygroundView } from "../model/common";
 
-export default function CodePlayground({}) {
-  const { submit, processing, activeView } = usePlayground();
+type ComponentView = typeof Editor | typeof Console | typeof Library;
 
+const COMPONENT_VIEW: Record<PlaygroundView, ComponentView> = {
+  editor: Editor,
+  console: Console,
+  library: Library,
+};
+
+export default function CodePlayground() {
+  const { submit, processing, playgroundView, isPlayground, isReading } =
+    usePlayground();
+  const ActiveView = COMPONENT_VIEW[playgroundView];
+
+  if (isReading) return;
   return (
     <div className="flex flex-col">
-      <PlaygroundView activeView={activeView} />
-      <SubmitButton onClick={submit} disabled={processing} />
+      <ActiveView />
+      {!isPlayground && <SubmitButton onClick={submit} disabled={processing} />}
     </div>
   );
 }
 
-type PlaygroundViewProps = {
-  activeView: PlaygroundViews;
-};
+type SubmitButtonProps = { onClick: () => void; disabled?: boolean };
 
-const PlaygroundView = ({ activeView }: Props) => {
-  switch (activeView) {
-    case PlaygroundViews.EDITOR:
-      return <Editor />;
-    case PlaygroundViews.CONSOLE:
-      return <Console />;
-    case PlaygroundViews.LIBRARY:
-      return <Library />;
-  }
-};
-
-const SubmitButton: React.FC<{ onClick: () => void; disabled?: boolean }> = ({
-  onClick,
-  disabled,
-}) => (
+const SubmitButton: React.FC<SubmitButtonProps> = ({ onClick, disabled }) => (
   <button
     onClick={onClick}
     disabled={disabled}
-    className={`w-full py-3 rounded font-semibold flex justify-center items-center gap-1 text-white ${
-      disabled ? "bg-gray-400" : "bg-mumuki-rose hover:bg-mumuki-rose-darken"
-    }`}>
+    className="w-full py-3 rounded font-semibold flex justify-center items-center gap-1 text-white bg-mumuki-rose hover:bg-mumuki-rose-darken disabled:bg-gray-400">
     <PlayIcon width={25} height={25} />
     <span>Enviar</span>
   </button>
