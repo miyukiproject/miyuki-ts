@@ -2,6 +2,7 @@ import { Analyzer, MulangAdapter, Tester, Interpreter, TestReport, AnalysisResul
 import { AST } from "yukigo-ast";
 import { YukigoHaskellParser } from "yukigo-haskell-parser";
 import { InterpreterConfig } from "yukigo/dist/interpreter/components/RuntimeContext";
+import { useCallback } from "react";
 
 export const interpreterConfig: InterpreterConfig = {
   lazyLoading: true,
@@ -18,30 +19,30 @@ export const resultStatus = (reports: TestReport[]) =>
       : "failed";
 
 export const useYukigo = () => {
-  const evaluate = (code: string, extra: string, command: string) => {
+  const evaluate = useCallback((code: string, extra: string, command: string) => {
     const parser = new YukigoHaskellParser();
     const ast = parser.parse((extra ? extra + "\n" : "") + code);
     const expression = parser.parseExpression(command);
 
     const interpreter = new Interpreter(ast, interpreterConfig);
     return interpreter.evaluate(expression);
-  };
+  }, []);
 
-  const runTests = (code: string, extra: string, test: string) => {
+  const runTests = useCallback((code: string, extra: string, test: string) => {
     const parser = new YukigoHaskellParser();
     const ast = parser.parse((extra ? extra + "\n" : "") + code);
     const tester = new Tester(ast, interpreterConfig);
     const testResults = tester.test(parser.parse(test));
     return { ast, testResults };
-  };
+  }, []);
 
-  const runAnalysis = (ast: AST, expectations: unknown[]): AnalysisResult[] => {
+  const runAnalysis = useCallback((ast: AST, expectations: unknown[]): AnalysisResult[] => {
     const analyzer = new Analyzer();
     const adapter = new MulangAdapter();
     const translatedExpectations =
-      expectations.map((exp) => adapter.translateMulangInspection(exp)) || [];
+      expectations?.map((exp) => adapter.translateMulangInspection(exp)) || [];
     return analyzer.analyze(ast, translatedExpectations);
-  };
+  }, []);
 
   return { evaluate, runTests, runAnalysis };
 };

@@ -4,11 +4,7 @@ export type UUID = string;
 export type Slug = string;
 export type Locale = string;
 
-export enum PlaygroundViews {
-  EDITOR,
-  LIBRARY,
-  CONSOLE,
-}
+export type PlaygroundView = "editor" | "console" | "library";
 
 export type ExerciseResult = {
   tests: TestReport[] | null;
