@@ -1,12 +1,12 @@
 import { usePlayground } from "../../hooks/usePlayground";
-import {
-  ConsoleButton,
-  EditorButton,
-  LibraryButton,
-} from "./PlaygroundButton";
+import { ConsoleButton, EditorButton, LibraryButton } from "./PlaygroundButton";
 
 export default function PlaygroundHeader() {
-  const { exercise } = usePlayground();
+  const { exercise, isPlayground, isReading } = usePlayground();
+
+  const showHeader = !isPlayground && !isReading;
+
+  if (!showHeader) return;
 
   return (
     <div className="flex items-center border-b">
