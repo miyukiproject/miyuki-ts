@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { ProgressStatus } from "./ProgressStatus";
-import { usePlayground } from "./CodePlayground/PlaygroundContext";
+import { usePlayground } from "./hooks/usePlayground";
 import { resultStatus } from "./hooks/useYukigo";
 
 interface ProgressItemProps {

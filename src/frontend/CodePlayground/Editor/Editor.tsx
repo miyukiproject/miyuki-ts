@@ -1,7 +1,7 @@
 import MonacoEditor, { OnMount } from "@monaco-editor/react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { usePlayground } from "../PlaygroundContext";
+import { usePlayground } from "../../hooks/usePlayground";
 import EditorButton from "./EditorButton";
 
 type EditorProps = {};

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { codeToHtml } from "shiki";
-import { usePlayground } from "./PlaygroundContext";
+import { usePlayground } from "../hooks/usePlayground";
 
 export default function Library() {
   const {

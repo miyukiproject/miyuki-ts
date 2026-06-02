@@ -7,7 +7,7 @@ type Props = {
   expectations: AnalysisResult[] | null;
   error: Error | null;
 };
-import { usePlayground } from "./CodePlayground/PlaygroundContext";
+import { usePlayground } from "./hooks/usePlayground";
 
 const testsOk = (tests: TestReport[]) =>
   tests.every((res) => res.status === "passed");
