@@ -144,13 +144,7 @@ const Exercise: React.FC = () => {
 
         <div className="mt-8">
           <Feedback />
-          <NextButton
-            nextExercise={nextExercise}
-            onClick={() => {
-              const { reset } = usePlayground();
-              reset();
-            }}
-          />
+          <NextButton nextExercise={nextExercise} />
         </div>
       </PlaygroundProvider>
     </Main>

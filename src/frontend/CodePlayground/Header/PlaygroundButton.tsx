@@ -20,13 +20,13 @@ const BaseButton = ({ text, icon, isActive, onClick }: BaseButtonProps) => {
       }
     >
       {icon}
-      <span className="text-mumuki-teal">{text}</span>
+      <span className="text-mumuki-teal font-medium">{text}</span>
     </button>
   );
 };
 
 export const EditorButton = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { playgroundView, changeToEditor } = usePlayground();
 
   return (
@@ -42,14 +42,14 @@ export const EditorButton = () => {
 };
 
 export const ConsoleButton = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { playgroundView, changeToConsole } = usePlayground();
 
   return (
     <BaseButton
       text={t("console")}
       icon={
-        <CodeIcon width={15} height={15} className="fill-mumuki-teal" />
+        <TerminalIcon width={15} height={15} className="fill-mumuki-teal" />
       }
       isActive={playgroundView === "console"}
       onClick={changeToConsole}
@@ -58,17 +58,18 @@ export const ConsoleButton = () => {
 };
 
 export const LibraryButton = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { playgroundView, changeToLibrary } = usePlayground();
 
   return (
     <BaseButton
       text={t("library")}
       icon={
-        <TerminalIcon width={15} height={15} className="fill-mumuki-teal" />
+        <CodeIcon width={15} height={15} className="fill-mumuki-teal" />
       }
       isActive={playgroundView === "library"}
       onClick={changeToLibrary}
     />
   );
 };
+
