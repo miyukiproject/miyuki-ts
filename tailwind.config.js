@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        lato: ['Lato', 'sans-serif'],
+      },
       colors: {
         "mumuki-skyblue": "#3498DB",
         "mumuki-rose": "#ff5b81",

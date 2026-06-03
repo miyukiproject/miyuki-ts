@@ -4,8 +4,8 @@ import { Link } from "react-router";
 import { Description } from "./Description";
 import { ExercisesList } from "./ExercisesList";
 import { Main } from "./Main";
-import { ContentChildrenTitle, ContentChildTitle, ContentTitle } from "./Title";
 import { functional, pdep } from "./model/book";
+import { Heading1, Heading2, Heading3 } from "./Title";
 
 const chapter = functional;
 const exerciseModules = import.meta.glob("../exercises/**/*", { eager: true });
@@ -21,12 +21,12 @@ const Chapter: React.FC = () => {
     <Main book={pdep} chapter={chapter}>
       {/* Header */}
       <header className="mb-8">
-        <ContentTitle>
+        <Heading1>
           {t("chapterTitle", {
             number: chapter.id,
             name: chapter.name,
           })}
-        </ContentTitle>
+        </Heading1>
 
         <Description className="bg-white p-4 flex gap-4">
           {chapter.description}
@@ -35,20 +35,20 @@ const Chapter: React.FC = () => {
 
       {/* Lessons */}
       <section>
-        <ContentChildTitle>{t("lessons")}</ContentChildTitle>
+        <Heading3>{t("lessons")}</Heading3>
 
         {lessons.map((lesson, index) => {
           console.log(lesson)
           return (
             <div key={lesson.id} className="mb-8">
-              <ContentChildTitle>
+              <Heading2>
                 {index + 1}.{" "}
                 <Link
                   to={`/lessons/${index + 1}`}
                   className="text-blue-600 hover:underline">
                   {lesson.name}
                 </Link>
-              </ContentChildTitle>
+              </Heading2>
 
               <ExercisesList
                 lessonId={`${index + 1}`}
@@ -61,7 +61,7 @@ const Chapter: React.FC = () => {
 
       {/* Appendix */}
       <section className="mt-10">
-        <ContentChildrenTitle>{t("appendix")}</ContentChildrenTitle>
+        <Heading2>{t("appendix")}</Heading2>
 
         <p className="text-gray-600">
           {t("appendixTeaser")}{" "}
