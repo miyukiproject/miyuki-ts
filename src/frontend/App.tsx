@@ -2,7 +2,7 @@ import "./helpers/editorConfig";
 import './App.css';
 import { HashRouter, Routes, Route } from "react-router-dom"
 import Lesson from "./Lesson"
-import Exercise from "./Exercise"
+import Exercise from "./Exercise/Exercise"
 import Book from './Book';
 import Chapter from './Chapter';
 import './i18n';

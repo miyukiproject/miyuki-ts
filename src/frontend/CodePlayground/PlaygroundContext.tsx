@@ -12,6 +12,7 @@ interface PlaygroundContextType {
   exercise: any;
   submit: () => void;
   reset: () => void;
+  isNextVisible: boolean
 }
 
 const PlaygroundContext = createContext<PlaygroundContextType | undefined>(
@@ -38,6 +39,10 @@ export const PlaygroundProvider: React.FC<{
   const { runTests, runAnalysis } = useYukigo();
   const [code, setCode] = useState<string>(exercise.default_content ?? "");
   const [processing, setProcessing] = useState<boolean>(false);
+
+  // si hay progreso hecho en el ejercicio esto deberia estar en true
+  const [isNextVisible, setNextVisible] = useState<boolean>(false)
+  
   const [activeView, setActiveView] = useState<PlaygroundViews>(
     PlaygroundViews.EDITOR,
   );
@@ -74,6 +79,7 @@ export const PlaygroundProvider: React.FC<{
       }));
     } finally {
       setProcessing(false);
+      setNextVisible(true)
     }
   };
 
@@ -88,6 +94,7 @@ export const PlaygroundProvider: React.FC<{
         setActiveView,
         exercise,
         submit,
+        isNextVisible,
         reset,
       }}>
       {children}
