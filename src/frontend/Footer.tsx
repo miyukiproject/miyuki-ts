@@ -17,7 +17,7 @@ export default function Footer({ lesson }: FooterProps) {
   const { t } = useTranslation();
   return (
     <footer className="mt-14">
-      <div className="border-t border-gray-300 pt-2 font-[Lato_sans-serif]">
+      <div className="border-t border-gray-300 pt-2 font-lato">
         {Boolean(lesson) && (
           <Description className="text-sm mb-4">
             {t("authoringNoteHtml", { authors: lesson.authors })}
