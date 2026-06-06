@@ -3,11 +3,11 @@ import { ChapterCard } from "./ChapterCard";
 import { Chapter } from "../Book/Book.data";
 import { Heading2 } from "../Title";
 
-type ChapterListViewProps = {
+type ChapterListProps = {
     chapters: Chapter[]
 }
 
-export const ChapterListView = ({ chapters }: ChapterListViewProps) => {
+export const ChapterList = ({ chapters }: ChapterListProps) => {
     const { t } = useTranslation();
     return (
         <section className="lg:w-2/3 mx-auto">
