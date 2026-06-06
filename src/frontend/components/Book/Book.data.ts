@@ -9,7 +9,8 @@ export type Chapter = {
   id: number,
   name: string,
   description: string,
-  imageUrl: string
+  imageUrl: string,
+  source?: string
 }
 
 //TODO mover a un json?
@@ -24,6 +25,7 @@ export const pdep: Book = {
       description:
         "El paradigma funcional es de los más **antiguos**, pero también de los más **simples** y **poderosos**. Si querés aprender _a dominar el mundo con nada_, utilizando el lenguaje [Haskell](https://www.haskell.org/), seguí por acá.",
       imageUrl: "https://mumuki.io/static/for_content/capitulo3-01.svg",
+      source: "mumuki-tema-introduccion-a-la-programacion-funcional-pdep-utn",
     },
     {
       id: 2,

@@ -1,20 +1,20 @@
 import { useTranslation } from "react-i18next";
-import { Heading2 } from "../../Title";
 import { ChapterCard } from "./ChapterCard";
-import { Chapter } from "../Book.data";
+import { Chapter } from "../Book/Book.data";
+import { Heading2 } from "../Title";
 
-type ChaptersViewProps = {
+type ChapterListViewProps = {
     chapters: Chapter[]
 }
 
-export const ChaptersView = ({ chapters }: ChaptersViewProps) => {
+export const ChapterListView = ({ chapters }: ChapterListViewProps) => {
     const { t } = useTranslation();
     return (
         <section className="lg:w-2/3 mx-auto">
             <Heading2>{t("chapters")}</Heading2>
             <div className="space-y-8">
                 {chapters.map((chapter) => (
-                    <ChapterCard chapter={chapter} />
+                    <ChapterCard key={chapter.id} chapter={chapter} />
                 ))}
             </div>
         </section>

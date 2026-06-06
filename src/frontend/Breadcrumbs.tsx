@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
-import { DeepPartial } from "./helpers/DeepPartial";
-import { Book } from "./model/book";
-import { Exercise, Guide } from "./model/guide";
-import { Topic } from "./model/topic";
+import { Book, Chapter } from "./components/Book/Book.data";
 
 export type BreadcrumbsProps = {
-  book: DeepPartial<Book>,
-  chapter?: DeepPartial<Topic>,
-  lesson?: DeepPartial<Guide>,
-  exercise?: DeepPartial<Exercise>
+  book: Book,
+  chapter?: Chapter,
+  lesson?: { id: number, name: string },
+  exercise?: { id: number, name: string }
 }
 
 export function Breadcrumbs({ book, chapter, lesson, exercise }: BreadcrumbsProps) {

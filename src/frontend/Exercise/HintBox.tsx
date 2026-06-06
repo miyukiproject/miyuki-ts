@@ -1,4 +1,4 @@
-import { Description } from "../Description";
+import { Description } from "../components/Description";
 
 type HintBoxProps = {
   hint: string;

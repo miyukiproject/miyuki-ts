@@ -10,7 +10,7 @@ const socialButtonClass =
   "inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#d0e6f6] text-[#d0e6f6] transition-colors hover:border-[#3998d8] hover:bg-transparent hover:text-[#3998d8]";
 
 type FooterProps = {
-  lesson: any; // Deberia ser Lesson pero no tiene el tipado bien
+  lesson?: any; // Deberia ser Lesson pero no tiene el tipado bien
 };
 
 const Footer = ({ lesson }: FooterProps) =>{

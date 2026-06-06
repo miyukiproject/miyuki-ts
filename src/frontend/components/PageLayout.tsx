@@ -3,7 +3,7 @@ import Footer from "../Footer";
 
 type PageLayoutProps = {
   children: React.ReactNode
-  lesson: any
+  lesson?: any
 } & BreadcrumbsProps
 
 export const PageLayout = ({ children, lesson, ...breadcrumbProps }: PageLayoutProps) => {

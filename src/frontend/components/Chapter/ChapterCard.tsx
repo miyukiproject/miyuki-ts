@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Heading3 } from "../../Title";
-import { Chapter } from "../Book.data";
-import { Description } from "../../Description";
+import { Chapter } from "../Book/Book.data";
+import { Heading3 } from "../Title";
+import { Description } from "../Description";
 
 type ChapterCardProps = {
   chapter: Chapter
