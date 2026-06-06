@@ -1,11 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import { Description } from "./Description";
+import { Description } from "./components/Description";
 import { ExercisesList } from "./ExercisesList";
-import { Main } from "./Main";
-import { functional, pdep } from "./model/book";
-import { Heading1, Heading2, Heading3 } from "./Title";
+import { PageLayout } from "./components/PageLayout";
+import { functional } from "./model/book";
+import { Heading1, Heading2, Heading3 } from "./components/Title";
+import { pdep } from "./components/Book/Book.data";
 
 const chapter = functional;
 const exerciseModules = import.meta.glob("../exercises/**/*", { eager: true });
@@ -18,7 +19,7 @@ const Chapter: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Main book={pdep} chapter={chapter}>
+    <PageLayout book={pdep} chapter={chapter}>
       {/* Header */}
       <header className="mb-8">
         <Heading1>
@@ -72,7 +73,7 @@ const Chapter: React.FC = () => {
           </Link>
         </p>
       </section>
-    </Main>
+    </PageLayout>
   );
 };
 

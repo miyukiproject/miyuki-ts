@@ -2,7 +2,7 @@ import { Topic } from "./topic";
 import { Content } from "./content"
 import chapter from "../../exercises/mumuki-tema-introduccion-a-la-programacion-funcional-pdep-utn.json"
 
-export class Book extends Content {
+class Book extends Content {
   public chapters: Chapter[] = []
 
   firstChapter(): Chapter | undefined {
@@ -10,7 +10,7 @@ export class Book extends Content {
   }
 }
 
-export class Chapter {
+class Chapter {
   constructor(
     public readonly topic: Topic,
     public readonly book: Book,
@@ -18,7 +18,7 @@ export class Chapter {
   ) { }
 }
 
-export const pdep = {
+const pdep = {
   id: 1,
   name: "PdeP",
 }

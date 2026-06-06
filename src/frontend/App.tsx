@@ -2,23 +2,28 @@ import "./helpers/editorConfig";
 import './App.css';
 import { HashRouter, Routes, Route } from "react-router-dom"
 import Lesson from "./Lesson"
-import Exercise from "./Exercise/Exercise"
-import Book from './Book';
+import Exercise from "./Exercise"
 import Chapter from './Chapter';
 import './i18n';
+import { BookView } from "./components/Book/BookView";
+import { pdep } from "./components/Book/Book.data";
 
 function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Book />} />
-        <Route path="/chapters/:chapterId" element={<Chapter />} />
-        {/* <Route path="/chapters/:chapterId/appendix" element={<Appendix />} /> */}
-        <Route path="/lessons/:lessonId" element={<Lesson />} />
-        <Route path="/lessons/:lessonId/exercises/:exerciseId" element={<Exercise />} />
-        {/* <Route path="/faqs" element={<Faqs />} /> */}
+        <Route path="/" element={<BookView book={pdep}/>} />
       </Routes>
     </HashRouter>
   );
 }
 export default App;
+
+/**
+ * 
+ *         <Route path="/chapters/:chapterId" element={<Chapter />} />
+        {/* <Route path="/chapters/:chapterId/appendix" element={<Appendix />} /> }
+        <Route path="/lessons/:lessonId" element={<Lesson />} />
+        <Route path="/lessons/:lessonId/exercises/:exerciseId" element={<Exercise />} />
+        {/* <Route path="/faqs" element={<Faqs />} /> }
+ */

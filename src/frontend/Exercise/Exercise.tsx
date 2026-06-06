@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
-import { Main } from "../Main";
-import { functional, pdep } from "../model/book";
+import { functional } from "../model/book";
 import { ProgressBar } from "../ProgressBar";
-import { Heading1 } from "../Title";
+import { Heading1 } from "../components/Title";
 import CodePlayground from "../CodePlayground/CodePlayground";
 import { PlaygroundProvider } from "../CodePlayground/PlaygroundContext";
 import PlaygroundHeader from "../CodePlayground/Header/PlaygroundHeader";
 import FeedbackArea from "./FeedbackArea";
 import Assignment from "./Assignment";
 import { layout } from "./utils";
+import { PageLayout } from "../components/PageLayout";
+import { pdep } from "../components/Book/Book.data";
 
 const exerciseModules = import.meta.glob("../../exercises/**/*", { eager: true });
 
@@ -34,7 +35,7 @@ const Exercise: React.FC = () => {
   const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   return (
-    <Main
+    <PageLayout
       fullscreen={fullscreen}
       book={pdep}
       chapter={functional}
@@ -69,7 +70,7 @@ const Exercise: React.FC = () => {
         </div>
         <FeedbackArea nextExercise={nextExercise} />
       </PlaygroundProvider>
-    </Main>
+    </PageLayout>
   );
 };
 

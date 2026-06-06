@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Description } from "./Description";
+import { Description } from "../Description";
 
 const IntroBanner: React.FC = () => {
   const { t } = useTranslation();
