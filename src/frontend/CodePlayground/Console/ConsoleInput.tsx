@@ -1,5 +1,5 @@
 import { Dispatch, KeyboardEvent, Ref, SetStateAction, useState } from "react";
-import { usePlayground } from "../PlaygroundContext";
+import { usePlayground } from "../../hooks/usePlayground";
 import { useYukigo } from "../../hooks/useYukigo";
 import { Entry } from "./Console";
 

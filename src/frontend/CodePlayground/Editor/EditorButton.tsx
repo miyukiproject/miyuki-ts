@@ -1,4 +1,4 @@
-import { JSX, MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 
 type Props = {
   icon: string; // despues pasemoslo a JSX.Element con lucide-icons

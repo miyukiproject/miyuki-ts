@@ -11,10 +11,7 @@ import { ContentTitle } from "./Title";
 import Feedback from "./Feedback";
 import { LightbulbIcon } from "./icons/Icons";
 import CodePlayground from "./CodePlayground/CodePlayground";
-import {
-  PlaygroundProvider,
-  usePlayground,
-} from "./CodePlayground/PlaygroundContext";
+import { PlaygroundProvider } from "./CodePlayground/PlaygroundContext";
 import PlaygroundHeader from "./CodePlayground/Header/PlaygroundHeader";
 
 const exerciseModules = import.meta.glob("../exercises/**/*", { eager: true });
@@ -147,13 +144,7 @@ const Exercise: React.FC = () => {
 
         <div className="mt-8">
           <Feedback />
-          <NextButton
-            nextExercise={nextExercise}
-            onClick={() => {
-              const { reset } = usePlayground();
-              reset();
-            }}
-          />
+          <NextButton nextExercise={nextExercise} />
         </div>
       </PlaygroundProvider>
     </Main>
