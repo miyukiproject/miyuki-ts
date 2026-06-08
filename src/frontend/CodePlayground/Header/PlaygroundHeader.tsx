@@ -1,7 +1,7 @@
 import { usePlayground } from "../../hooks/usePlayground";
 import { ConsoleButton, EditorButton, LibraryButton } from "./PlaygroundButton";
 
-export default function PlaygroundHeader() {
+const PlaygroundHeader = () => {
   const { exercise, isPlayground, isReading } = usePlayground();
 
   const showHeader = !isPlayground && !isReading;
@@ -16,3 +16,5 @@ export default function PlaygroundHeader() {
     </div>
   );
 }
+
+export default PlaygroundHeader

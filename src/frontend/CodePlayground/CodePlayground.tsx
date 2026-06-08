@@ -13,9 +13,8 @@ const COMPONENT_VIEW: Record<PlaygroundView, ComponentView> = {
   library: Library,
 };
 
-export default function CodePlayground() {
-  const { submit, processing, playgroundView, isPlayground, isReading } =
-    usePlayground();
+const CodePlayground = () => {
+  const { submit, processing, playgroundView, isPlayground, isReading } = usePlayground();
   const ActiveView = COMPONENT_VIEW[playgroundView];
 
   if (isReading) return;
@@ -25,7 +24,7 @@ export default function CodePlayground() {
       {!isPlayground && <SubmitButton onClick={submit} disabled={processing} />}
     </div>
   );
-}
+};
 
 type SubmitButtonProps = { onClick: () => void; disabled?: boolean };
 
@@ -38,3 +37,5 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ onClick, disabled }) => (
     <span>Enviar</span>
   </button>
 );
+
+export default CodePlayground;
