@@ -11,11 +11,7 @@ type AssignmentProps = {
   setShowHint: (value: boolean) => void;
 };
 
-export default function Assignment({
-  exercise,
-  showHint,
-  setShowHint,
-}: AssignmentProps) {
+const Assignment = ({ exercise, showHint, setShowHint }: AssignmentProps) =>{
   const { t } = useTranslation();
   return (
     <div className={`exercise-assignment ${layout.text[exercise.layout]}`}>
@@ -35,3 +31,5 @@ export default function Assignment({
     </div>
   );
 }
+
+export default Assignment

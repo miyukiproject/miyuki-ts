@@ -13,7 +13,7 @@ type FooterProps = {
   lesson: any; // Deberia ser Lesson pero no tiene el tipado bien
 };
 
-export default function Footer({ lesson }: FooterProps) {
+const Footer = ({ lesson }: FooterProps) =>{
   const { t } = useTranslation();
   return (
     <footer className="mt-14">
@@ -91,3 +91,5 @@ export default function Footer({ lesson }: FooterProps) {
     </footer>
   );
 }
+
+export default Footer

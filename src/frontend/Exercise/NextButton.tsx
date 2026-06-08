@@ -3,14 +3,13 @@ import { DeepPartial } from "../helpers/DeepPartial";
 import { Exercise } from "../model/guide";
 import { Link, useParams } from "react-router";
 
-// TODO next should be generic, not just exercise
-export default function NextButton({
-  nextExercise,
-  onClick,
-}: {
+type ButtonProps = {
   nextExercise: DeepPartial<Exercise>;
   onClick?: () => void;
-}) {
+}
+
+// TODO next should be generic, not just exercise
+const NextButton = ({ nextExercise,onClick }: ButtonProps) =>{
   const { t } = useTranslation();
   const { lessonId, exerciseId } = useParams();
 
@@ -27,3 +26,5 @@ export default function NextButton({
     </Link>
   );
 }
+
+export default NextButton

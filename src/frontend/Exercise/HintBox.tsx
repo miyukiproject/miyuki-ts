@@ -4,10 +4,12 @@ type HintBoxProps = {
   hint: string;
 };
 
-export default function HintBox({ hint }: HintBoxProps) {
+const HintBox = ({ hint }: HintBoxProps) =>{
   return (
     <div className="mb-5">
       <Description className="p-3">{hint}</Description>
     </div>
   );
 }
+
+export default HintBox

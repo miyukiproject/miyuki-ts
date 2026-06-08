@@ -11,7 +11,7 @@ export type Entry = {
   content: string;
 };
 
-export default function Console() {
+const Console = () =>{
   const [history, setHistory] = useState<Entry[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,4 +34,6 @@ export default function Console() {
     </div>
   );
 }
+
+export default Console
 

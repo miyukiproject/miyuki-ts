@@ -6,7 +6,7 @@ import EditorButton from "./EditorButton";
 
 type EditorProps = {};
 
-export default function Editor({}: EditorProps) {
+const Editor = ({}: EditorProps) =>{
   const { t } = useTranslation();
   const { code, setCode, exercise } = usePlayground();
 
@@ -51,3 +51,5 @@ export default function Editor({}: EditorProps) {
     </div>
   );
 }
+
+export default Editor

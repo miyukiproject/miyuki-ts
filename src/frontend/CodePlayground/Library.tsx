@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { codeToHtml } from "shiki";
 import { usePlayground } from "../hooks/usePlayground";
 
-export default function Library() {
+const Library = () =>{
   const {
     exercise: { extra },
   } = usePlayground();
@@ -32,3 +32,5 @@ export default function Library() {
     />
   );
 }
+
+export default Library

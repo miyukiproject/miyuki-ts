@@ -185,7 +185,7 @@ const SuccessFeedback = () => {
   </FeedbackContainer>;
 };
 
-export default function Feedback() {
+const Feedback = () => {
   const {
     results: { tests, expectations, error },
   } = usePlayground();
@@ -200,3 +200,5 @@ export default function Feedback() {
 
   return <SuccessFeedback />;
 }
+
+export default Feedback

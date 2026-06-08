@@ -7,7 +7,7 @@ type FeedbackAreaProps = {
   nextExercise: Exercise;
 };
 
-export default function FeedbackArea({ nextExercise }: FeedbackAreaProps) {
+const FeedbackArea = ({ nextExercise }: FeedbackAreaProps) =>{
   const { isNextVisible } = usePlayground();
   return (
     <div className="mt-8">
@@ -24,3 +24,5 @@ export default function FeedbackArea({ nextExercise }: FeedbackAreaProps) {
     </div>
   );
 }
+
+export default FeedbackArea
