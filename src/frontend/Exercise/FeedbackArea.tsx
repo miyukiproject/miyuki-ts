@@ -1,4 +1,4 @@
-import { usePlayground } from "../CodePlayground/PlaygroundContext";
+import { usePlayground } from "../hooks/usePlayground";
 import Feedback from "../Feedback";
 import { Exercise } from "../model/guide";
 import NextButton from "./NextButton";

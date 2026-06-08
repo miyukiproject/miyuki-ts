@@ -4,24 +4,22 @@ import { useParams } from "react-router";
 import { Main } from "../Main";
 import { functional, pdep } from "../model/book";
 import { ProgressBar } from "../ProgressBar";
-import { ContentTitle } from "../Title";
+import { Heading1 } from "../Title";
 import CodePlayground from "../CodePlayground/CodePlayground";
-import {
-  PlaygroundProvider,
-} from "../CodePlayground/PlaygroundContext";
+import { PlaygroundProvider } from "../CodePlayground/PlaygroundContext";
 import PlaygroundHeader from "../CodePlayground/Header/PlaygroundHeader";
 import FeedbackArea from "./FeedbackArea";
 import Assignment from "./Assignment";
 import { layout } from "./utils";
 
-const exerciseModules = import.meta.glob("../exercises/**/*", { eager: true });
+const exerciseModules = import.meta.glob("../../exercises/**/*", { eager: true });
 
 const Exercise: React.FC = () => {
   const { t } = useTranslation();
   const { lessonId, exerciseId } = useParams();
 
   const lessonUrl = functional.lessons[Number(lessonId) - 1];
-  const lessonModule = exerciseModules[`../exercises/${lessonUrl}.json`];
+  const lessonModule = exerciseModules[`../../exercises/${lessonUrl}.json`];
   const lesson = lessonModule.default;
   const exercise = lesson.exercises[Number(exerciseId) - 1];
   const nextExercise = lesson.exercises[Number(exerciseId)];
@@ -41,13 +39,14 @@ const Exercise: React.FC = () => {
       book={pdep}
       chapter={functional}
       lesson={lesson}
-      exercise={exercise}>
-      <ContentTitle>
+      exercise={exercise}
+    >
+      <Heading1>
         {t("exerciseTitle", {
           number: Number(exerciseId),
           name: exercise.name,
         })}
-      </ContentTitle>
+      </Heading1>
 
       <PlaygroundProvider exercise={exercise}>
         {/* TODO: Save the progress? */}
@@ -60,7 +59,8 @@ const Exercise: React.FC = () => {
           />
 
           <div
-            className={`flex flex-col gap-4 rounded ${layout.text[exercise.layout]}`}>
+            className={`flex flex-col gap-4 rounded ${layout.text[exercise.layout]}`}
+          >
             <div className="flex flex-col">
               <PlaygroundHeader />
               <CodePlayground />
@@ -72,7 +72,5 @@ const Exercise: React.FC = () => {
     </Main>
   );
 };
-
-
 
 export default Exercise;
