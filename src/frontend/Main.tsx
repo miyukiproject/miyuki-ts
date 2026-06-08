@@ -11,7 +11,7 @@ export function Main({
     <main className={`p-6 container ${fullscreen ? "fixed inset-0 bg-white z-50 overflow-auto" : ""}`}>
       <Breadcrumbs {...rest} />
       {children}
-      {!fullscreen && <Footer />}
+      {!fullscreen && <Footer lesson={rest.lesson} />}
     </main>
   )
 }
