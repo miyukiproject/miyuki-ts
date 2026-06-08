@@ -1,43 +1,20 @@
-import { CodeIcon, PencilIcon, TerminalIcon } from "../../icons/Icons";
-import { usePlayground } from "../PlaygroundContext";
-import { PlaygroundViews } from "../../model/common";
-import { PlaygroundButton } from "./PlaygroundButton";
+import { usePlayground } from "../../hooks/usePlayground";
+import { ConsoleButton, EditorButton, LibraryButton } from "./PlaygroundButton";
 
-type PlaygroundHeaderProps = {};
+const PlaygroundHeader = () => {
+  const { exercise, isPlayground, isReading } = usePlayground();
 
-export default function PlaygroundHeader({}: PlaygroundHeaderProps) {
-  const { exercise, activeView, setActiveView } = usePlayground();
+  const showHeader = !isPlayground && !isReading;
+
+  if (!showHeader) return;
+
   return (
     <div className="flex items-center border-b">
-      <PlaygroundButton
-        icon={
-          <PencilIcon width={15} height={15} className="fill-mumuki-teal" />
-        }
-        view={PlaygroundViews.EDITOR}
-        translationKey="solution"
-        activeView={activeView}
-        setActiveView={setActiveView}
-      />
-      {exercise.extra && (
-        <PlaygroundButton
-          icon={
-            <CodeIcon width={15} height={15} className="fill-mumuki-teal" />
-          }
-          view={PlaygroundViews.LIBRARY}
-          translationKey="library"
-          activeView={activeView}
-          setActiveView={setActiveView}
-        />
-      )}
-      <PlaygroundButton
-        icon={
-          <TerminalIcon width={15} height={15} className="fill-mumuki-teal" />
-        }
-        view={PlaygroundViews.CONSOLE}
-        translationKey="console"
-        activeView={activeView}
-        setActiveView={setActiveView}
-      />
+      <EditorButton />
+      {exercise.extra && <LibraryButton />}
+      <ConsoleButton />
     </div>
   );
 }
+
+export default PlaygroundHeader

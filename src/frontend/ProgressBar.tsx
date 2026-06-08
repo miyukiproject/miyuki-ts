@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { ProgressStatus } from "./ProgressStatus";
-import { usePlayground } from "./CodePlayground/PlaygroundContext";
+import { usePlayground } from "./hooks/usePlayground";
 import { resultStatus } from "./hooks/useYukigo";
 
 interface ProgressItemProps {
@@ -45,7 +45,7 @@ export const ProgressBar: React.FC<{ items: ProgressItemProps[] }> = ({
     status: currentProgressStatus,
     active: true,
   };
-  <div className="flex gap-0.5 mb-6">
+  return <div className="flex gap-0.5 mb-6">
     {items.map((item, i) => (
       <ProgressItem key={i} {...item} />
     ))}

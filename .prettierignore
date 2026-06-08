@@ -1,0 +1,8 @@
+dist
+build
+node_modules
+public/locales
+src/exercises
+package-lock.json
+*.svg
+*.md
