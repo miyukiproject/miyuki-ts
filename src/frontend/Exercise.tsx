@@ -7,12 +7,12 @@ import { Main } from "./Main";
 import { functional, pdep } from "./model/book";
 import { Exercise as ExerciseModel } from "./model/guide";
 import { ProgressBar } from "./ProgressBar";
-import { ContentTitle } from "./Title";
 import Feedback from "./Feedback";
 import { LightbulbIcon } from "./icons/Icons";
 import CodePlayground from "./CodePlayground/CodePlayground";
 import { PlaygroundProvider } from "./CodePlayground/PlaygroundContext";
 import PlaygroundHeader from "./CodePlayground/Header/PlaygroundHeader";
+import { Heading1 } from "./Title";
 
 const exerciseModules = import.meta.glob("../exercises/**/*", { eager: true });
 
@@ -116,12 +116,12 @@ const Exercise: React.FC = () => {
       chapter={functional}
       lesson={lesson}
       exercise={exercise}>
-      <ContentTitle>
+      <Heading1>
         {t("exerciseTitle", {
           number: Number(exerciseId),
           name: exercise.name,
         })}
-      </ContentTitle>
+      </Heading1>
 
       <PlaygroundProvider exercise={exercise}>
         {/* TODO: Save the progress? */}

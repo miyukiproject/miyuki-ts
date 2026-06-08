@@ -5,7 +5,7 @@ import { Description } from "./Description";
 import { ExercisesList } from "./ExercisesList";
 import { Main } from "./Main";
 import { functional, pdep } from "./model/book";
-import { ContentChildrenTitle, ContentTitle } from "./Title";
+import { Heading1, Heading2 } from "./Title";
 
 const exerciseModules = import.meta.glob("../exercises/**/*", { eager: true });
 
@@ -21,9 +21,9 @@ const Lesson: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         {/* TODO use number from model */}
-        <ContentTitle>
+        <Heading1>
           {t("lessonTitle", { number: lessonId, name: lesson.name })}
-        </ContentTitle>
+        </Heading1>
         <div className="text-4xl font-bold">
           <i className={`da da-${lesson.language?.name}`}></i>
         </div>
@@ -35,7 +35,7 @@ const Lesson: React.FC = () => {
       </Description>
 
       {/* Exercises */}
-      <ContentChildrenTitle>{t("exercises")}</ContentChildrenTitle>
+      <Heading2>{t("exercises")}</Heading2>
       <ExercisesList lessonId={lessonId} exercises={lesson.exercises} />
 
       {/* Continue */}
