@@ -45,7 +45,7 @@ export const ProgressBar: React.FC<{ items: ProgressItemProps[] }> = ({
     status: currentProgressStatus,
     active: true,
   };
-  <div className="flex gap-0.5 mb-6">
+  return <div className="flex gap-0.5 mb-6">
     {items.map((item, i) => (
       <ProgressItem key={i} {...item} />
     ))}
