@@ -7,22 +7,16 @@ type FeedbackAreaProps = {
   nextExercise: Exercise;
 };
 
-const FeedbackArea = ({ nextExercise }: FeedbackAreaProps) =>{
-  const { isNextVisible } = usePlayground();
+const FeedbackArea = ({ nextExercise }: FeedbackAreaProps) => {
+  const { isNextVisible, reset } = usePlayground();
   return (
     <div className="mt-8">
       <Feedback />
       {isNextVisible && (
-        <NextButton
-          nextExercise={nextExercise}
-          onClick={() => {
-            const { reset } = usePlayground();
-            reset();
-          }}
-        />
+        <NextButton nextExercise={nextExercise} onClick={reset} />
       )}
     </div>
   );
-}
+};
 
-export default FeedbackArea
+export default FeedbackArea;
