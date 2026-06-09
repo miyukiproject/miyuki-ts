@@ -1,12 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { AnalysisResult, InspectionRule, TestReport } from "yukigo";
 import { CheckIcon, CrossIcon, ErrorIcon, SuccessIcon, WarningIcon } from "./icons/Icons";
-
-type Props = {
-  results: TestReport[] | null;
-  expectations: AnalysisResult[] | null;
-  error: Error | null;
-};
 import { usePlayground } from "./hooks/usePlayground";
 
 const testsOk = (tests: TestReport[]) =>
