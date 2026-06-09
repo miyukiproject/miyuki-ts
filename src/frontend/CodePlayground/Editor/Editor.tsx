@@ -4,9 +4,7 @@ import { useTranslation } from "react-i18next";
 import { usePlayground } from "../../hooks/usePlayground";
 import EditorButton from "./EditorButton";
 
-type EditorProps = {};
-
-const Editor = ({}: EditorProps) =>{
+const Editor = () =>{
   const { t } = useTranslation();
   const { code, setCode, exercise } = usePlayground();
 
