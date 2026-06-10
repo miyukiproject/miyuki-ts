@@ -1,12 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { AnalysisResult, InspectionRule, TestReport } from "yukigo";
 import { CheckIcon, CrossIcon, ErrorIcon, SuccessIcon, WarningIcon } from "./icons/Icons";
-
-type Props = {
-  results: TestReport[] | null;
-  expectations: AnalysisResult[] | null;
-  error: Error | null;
-};
 import { usePlayground } from "./hooks/usePlayground";
 
 const testsOk = (tests: TestReport[]) =>
@@ -185,7 +179,7 @@ const SuccessFeedback = () => {
   </FeedbackContainer>;
 };
 
-export default function Feedback() {
+const Feedback = () => {
   const {
     results: { tests, expectations, error },
   } = usePlayground();
@@ -200,3 +194,5 @@ export default function Feedback() {
 
   return <SuccessFeedback />;
 }
+
+export default Feedback

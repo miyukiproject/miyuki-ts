@@ -6,10 +6,12 @@ type Props = {
   title: string;
 };
 
-export default function EditorButton({ title, onClick, icon }: Props) {
+const EditorButton = ({ title, onClick, icon }: Props) =>{
   return (
     <button onClick={onClick} title={title}>
       {icon}
     </button>
   );
 }
+
+export default EditorButton
