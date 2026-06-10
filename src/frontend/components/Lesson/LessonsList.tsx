@@ -1,4 +1,4 @@
-import { ContentChildTitle } from "../Title"
+import { Heading2 } from "../Title"
 import { useTranslation } from "react-i18next"
 import { LessonCard } from "./LessonCard"
 
@@ -10,7 +10,7 @@ export const LessonsList = ({ lessons }: LessonsListProps) => {
     const { t } = useTranslation();
 
     return <section>
-        <ContentChildTitle>{t("lessons")}</ContentChildTitle>
+        <Heading2>{t("lessons")}</Heading2>
 
         {lessons.map((lesson, index) => (
             <LessonCard key={index} lesson={lesson} id={index + 1}/>

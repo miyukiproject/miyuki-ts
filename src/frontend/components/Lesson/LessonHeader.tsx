@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ContentTitle } from "../Title"
+import { Heading1 } from "../Title"
 
 type LessonHeaderProps = {
     lesson: any,
@@ -11,9 +11,9 @@ export const LessonHeader = ({ lesson, id }: LessonHeaderProps) => {
 
     return <div className="flex justify-between items-center mb-6">
         {/* TODO use number from model */}
-        <ContentTitle>
+        <Heading1>
             {t("lessonTitle", { number: id, name: lesson.name })}
-        </ContentTitle>
+        </Heading1>
         <div className="text-4xl font-bold">
             <i className={`da da-${lesson.language?.name}`}></i>
         </div>

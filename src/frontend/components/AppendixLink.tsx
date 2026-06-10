@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { ContentChildrenTitle } from "./Title"
+import { Heading3 } from "./Title"
 import { useTranslation } from "react-i18next";
 
 type ApendixLinkProps = {
@@ -10,7 +10,7 @@ export const AppendixLink = ({chapterId}: ApendixLinkProps) => {
   const { t } = useTranslation();
     
     return <section className="mt-10">
-        <ContentChildrenTitle>{t("appendix")}</ContentChildrenTitle>
+        <Heading3>{t("appendix")}</Heading3>
 
         <p className="text-gray-600">
             {t("appendixTeaser")}{" "}

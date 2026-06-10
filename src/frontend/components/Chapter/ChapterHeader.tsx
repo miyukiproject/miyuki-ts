@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { Description } from "../Description"
-import { ContentTitle } from "../Title"
+import { Heading1 } from "../Title"
 
 type ChapterHeaderProps = {
     id: number,
@@ -12,9 +12,9 @@ export const ChapterHeader = ({ id, name, description }: ChapterHeaderProps) => 
     const { t } = useTranslation();
 
     return <header className="mb-8">
-        <ContentTitle>
+        <Heading1>
             {t("chapterTitle", { number: id, name: name })}
-        </ContentTitle>
+        </Heading1>
 
         <Description className="bg-white p-4 flex gap-4">
             {description}

@@ -6,7 +6,7 @@ import { BookView } from "./components/Book/BookView";
 import { pdep } from "./components/Book/Book.data";
 import { Chapter } from "./components/Chapter/Chapter";
 import { Lesson } from "./components/Lesson/Lesson";
-import Exercise from "./Exercise";
+import Exercise from "./Exercise/Exercise";
 
 function App() {
   return (

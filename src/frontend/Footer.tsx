@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Description } from "./Description";
+import { Description } from "./components/Description";
 
 const currentYear = new Date().getFullYear();
 const brandBlueClass = "text-[#3998d8]";
