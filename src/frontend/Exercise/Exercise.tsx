@@ -13,6 +13,8 @@ import { layout } from "./utils";
 import { PageLayout } from "../components/PageLayout";
 import { pdep } from "../components/Book/Book.data";
 
+import { useNextResource } from "../hooks/useNextResource";
+
 const exerciseModules = import.meta.glob("../../exercises/**/*", { eager: true });
 
 const Exercise: React.FC = () => {
@@ -23,7 +25,7 @@ const Exercise: React.FC = () => {
   const lessonModule = exerciseModules[`../../exercises/${lessonUrl}.json`];
   const lesson = lessonModule.default;
   const exercise = lesson.exercises[Number(exerciseId) - 1];
-  const nextExercise = lesson.exercises[Number(exerciseId)];
+  const nextResource = useNextResource(lessonId, exerciseId);
 
   const [showHint, setShowHint] = useState<boolean>(false);
   // Fake progress
@@ -68,7 +70,7 @@ const Exercise: React.FC = () => {
             </div>
           </div>
         </div>
-        <FeedbackArea nextExercise={nextExercise} />
+        <FeedbackArea nextResource={nextResource} />
       </PlaygroundProvider>
     </PageLayout>
   );
