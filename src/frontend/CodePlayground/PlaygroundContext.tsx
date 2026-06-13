@@ -109,8 +109,11 @@ export function PlaygroundProvider({
         error,
       }));
     } finally {
-      setProcessing(false);
-      setNextVisible(true)
+      setTimeout(() => {
+        setProcessing(false);
+        setNextVisible(true)
+      }, 400); // delay artificial para dar la sensacion de carga
+      // miyuki is just too fast bro...
     }
   }, [code, exercise, runTests, runAnalysis]);
 
