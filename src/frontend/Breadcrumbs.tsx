@@ -30,7 +30,7 @@ export function Breadcrumbs({ book, chapter, lesson, exercise }: BreadcrumbsProp
       {lesson && (
         <>
           <span>/</span>
-          <Link to={`/lessons/${lesson.id}`} className="hover:underline">
+          <Link to={`/chapters/${chapter?.id}/lessons/${lesson.id}`} className="hover:underline">
             {lesson.id}. {lesson.name}
           </Link>
         </>
@@ -39,7 +39,7 @@ export function Breadcrumbs({ book, chapter, lesson, exercise }: BreadcrumbsProp
       {exercise && (
         <>
           <span>/</span>
-          <Link to={`/exercises/${exercise.id}`} className="hover:underline">
+          <Link to={`/chapters/${chapter?.id}/lessons/${lesson?.id}/exercises/${exercise.id}`} className="hover:underline">
             {exercise.id}. {exercise.name}
           </Link>
         </>

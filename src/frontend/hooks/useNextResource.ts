@@ -1,15 +1,20 @@
 import { useTranslation } from "react-i18next";
-import { functional } from "../model/book";
+import { functional, chapters } from "../model/book";
 
 const exerciseModules = import.meta.glob("../../exercises/**/*", { eager: true });
 
-export const useNextResource = (lessonId: string | undefined, exerciseId: string | undefined) => {
+export const useNextResource = (chapterId: string | undefined, lessonId: string | undefined, exerciseId: string | undefined) => {
   const { t } = useTranslation();
 
+  const cId = Number(chapterId);
   const lId = Number(lessonId);
   const eId = Number(exerciseId);
 
-  const lessonUrl = functional.lessons[lId - 1];
+  // For now we assume the current chapter is 'functional' if cId is 1
+  // In a real app, we would look up the chapter by cId
+  const chapter = chapters.find(c => c.id === cId) || functional;
+
+  const lessonUrl = chapter.lessons[lId - 1];
   const lessonModule: any = exerciseModules[`../../exercises/${lessonUrl}.json`];
   const lesson = lessonModule.default;
   const nextExercise = lesson.exercises[eId];
@@ -17,24 +22,33 @@ export const useNextResource = (lessonId: string | undefined, exerciseId: string
   if (nextExercise) {
     return {
       name: nextExercise.name,
-      to: `/lessons/${lId}/exercises/${eId + 1}`,
+      to: `/chapters/${cId}/lessons/${lId}/exercises/${eId + 1}`,
       kind: t("exercise"),
     };
   }
 
-  const nextLessonUrl = functional.lessons[lId];
+  const nextLessonUrl = chapter.lessons[lId];
   if (nextLessonUrl) {
     const nextLessonModule: any = exerciseModules[`../../exercises/${nextLessonUrl}.json`];
     return {
       name: nextLessonModule.default.name,
-      to: `/lessons/${lId + 1}/exercises/1`,
+      to: `/chapters/${cId}/lessons/${lId + 1}/exercises/1`,
       kind: t("lesson"),
     };
   }
 
+  const nextChapter = chapters.find(c => c.id === cId + 1);
+  if (nextChapter) {
+    return {
+      name: nextChapter.name,
+      to: `/chapters/${cId + 1}`,
+      kind: t("chapter"),
+    };
+  }
+
   return {
-    name: functional.name,
-    to: `/chapters/${functional.id}`,
-    kind: t("chapter"),
+    name: t("home"),
+    to: "/",
+    kind: t("home"),
   };
 };

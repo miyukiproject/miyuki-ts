@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
-import { functional } from "../model/book";
+import { functional, chapters } from "../model/book";
 import { ProgressBar } from "../ProgressBar";
 import { Heading1 } from "../components/Title";
 import CodePlayground from "../CodePlayground/CodePlayground";
@@ -19,17 +19,19 @@ const exerciseModules = import.meta.glob("../../exercises/**/*", { eager: true }
 
 const Exercise: React.FC = () => {
   const { t } = useTranslation();
-  const { lessonId, exerciseId } = useParams();
+  const { chapterId, lessonId, exerciseId } = useParams();
 
-  const lessonUrl = functional.lessons[Number(lessonId) - 1];
-  const lessonModule = exerciseModules[`../../exercises/${lessonUrl}.json`];
+  const chapter = chapters.find(c => c.id === Number(chapterId)) || functional;
+  const lessonUrl = chapter.lessons[Number(lessonId) - 1];
+  const lessonModule = (exerciseModules as any)[`../../exercises/${lessonUrl}.json`];
   const lesson = lessonModule.default;
   const exercise = lesson.exercises[Number(exerciseId) - 1];
-  const nextResource = useNextResource(lessonId, exerciseId);
+  const nextResource = useNextResource(chapterId, lessonId, exerciseId);
 
   const [showHint, setShowHint] = useState<boolean>(false);
   // Fake progress
   const progress = lesson.exercises.map((_: any, i: number) => ({
+    chapterId: chapterId,
     lessonId: lessonId,
     exerciseId: i + 1,
     status: i < Number(exerciseId) ? "passed" : "pending",
@@ -40,7 +42,7 @@ const Exercise: React.FC = () => {
     <PageLayout
       fullscreen={fullscreen}
       book={pdep}
-      chapter={functional}
+      chapter={chapter}
       lesson={lesson}
       exercise={exercise}
     >
