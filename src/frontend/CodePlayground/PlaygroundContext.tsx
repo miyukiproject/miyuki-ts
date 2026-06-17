@@ -56,7 +56,7 @@ export function PlaygroundProvider({
   const [processing, setProcessing] = useState<boolean>(false);
 
   // si hay progreso hecho en el ejercicio esto deberia estar en true
-  const [isNextVisible, setNextVisible] = useState<boolean>(false)
+  const [isNextVisible, setNextVisible] = useState<boolean>(isReading || isPlayground)
   
   const [playgroundView, setPlaygroundView] =
     useState<PlaygroundView>(resetView());
@@ -78,6 +78,7 @@ export function PlaygroundProvider({
     setResults(baseResult);
     setPlaygroundView(resetView());
     setCode(exercise.default_content ?? "");
+    setNextVisible(isReading || isPlayground)
   }, [exercise.default_content, resetView]);
 
   useEffect(() => {

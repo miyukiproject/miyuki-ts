@@ -30,6 +30,7 @@
     "yukigo-haskell-parser": "^0.1.3"
   },
   "scripts": {
+    "start": "vite",
     "dev": "concurrently \"vite\" \"cross-env DEV= tsc-watch -p tsconfig-electron.json --onSuccess \\\"electron . --no-sandbox\\\"\"",
     "preview": "vite build && tsc -p tsconfig-electron.json && cross-env PREVIEW= electron . --no-sandbox",
     "build": "vite build && tsc -p tsconfig-electron.json && electron-forge make",

@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { Exercise } from "../model/guide";
-import { Description } from "../Description";
 import { LightbulbIcon } from "../icons/Icons";
 import HintBox from "./HintBox";
 import { layout } from "./utils";
+import { Description } from "../components/Description";
 
 type AssignmentProps = {
   exercise: Exercise;
