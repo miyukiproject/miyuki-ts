@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Book, Chapter } from "./components/Book/Book.data";
 
 export type BreadcrumbsProps = {
@@ -9,6 +9,11 @@ export type BreadcrumbsProps = {
 }
 
 export function Breadcrumbs({ book, chapter, lesson, exercise }: BreadcrumbsProps) {
+  const { lessonId, exerciseId } = useParams();
+
+  const chapterIndex = book.chapters.findIndex((c) => c.id === chapter?.id);
+  const chapterRelativeId = chapterIndex !== -1 ? chapterIndex + 1 : chapter?.id;
+
   return (
     <nav className="text-gray-600 mb-4 flex items-center gap-2">
       <span className="font-semibold text-blue-600"></span>
@@ -16,13 +21,11 @@ export function Breadcrumbs({ book, chapter, lesson, exercise }: BreadcrumbsProp
         {book.name}
       </Link>
 
-      {/* TODO Add numbers */}
-      {/* TODO fix underline numbers */}
       {chapter && (
         <>
           <span>/</span>
           <Link to={`/chapters/${chapter.id}`} className="hover:underline">
-            {chapter.id}. {chapter.name}
+            {chapterRelativeId}. {chapter.name}
           </Link>
         </>
       )}
@@ -30,8 +33,8 @@ export function Breadcrumbs({ book, chapter, lesson, exercise }: BreadcrumbsProp
       {lesson && (
         <>
           <span>/</span>
-          <Link to={`/chapters/${chapter?.id}/lessons/${lesson.id}`} className="hover:underline">
-            {lesson.id}. {lesson.name}
+          <Link to={`/chapters/${chapter?.id}/lessons/${lessonId || lesson.id}`} className="hover:underline">
+            {lessonId || lesson.id}. {lesson.name}
           </Link>
         </>
       )}
@@ -39,8 +42,8 @@ export function Breadcrumbs({ book, chapter, lesson, exercise }: BreadcrumbsProp
       {exercise && (
         <>
           <span>/</span>
-          <Link to={`/chapters/${chapter?.id}/lessons/${lesson?.id}/exercises/${exercise.id}`} className="hover:underline">
-            {exercise.id}. {exercise.name}
+          <Link to={`/chapters/${chapter?.id}/lessons/${lessonId || lesson?.id}/exercises/${exerciseId || exercise.id}`} className="hover:underline">
+            {exerciseId || exercise.id}. {exercise.name}
           </Link>
         </>
       )}

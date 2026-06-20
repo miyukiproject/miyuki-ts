@@ -38,6 +38,8 @@ const Exercise: React.FC = () => {
   }));
   const [fullscreen, setFullscreen] = useState<boolean>(false);
 
+  const exerciseLayout = (exercise?.layout || "input_right") as keyof typeof layout.text;
+
   return (
     <PageLayout
       fullscreen={fullscreen}
@@ -56,7 +58,7 @@ const Exercise: React.FC = () => {
       <PlaygroundProvider exercise={exercise}>
         {/* TODO: Save the progress? */}
         <ProgressBar items={progress} />
-        <div className={`${layout.container[exercise.layout]} gap-6`}>
+        <div className={`${layout.container[exerciseLayout]} gap-6`}>
           <Assignment
             exercise={exercise}
             setShowHint={setShowHint}
@@ -64,7 +66,7 @@ const Exercise: React.FC = () => {
           />
 
           <div
-            className={`flex flex-col gap-4 rounded ${layout.text[exercise.layout]}`}
+            className={`flex flex-col gap-4 rounded ${layout.text[exerciseLayout]}`}
           >
             <div className="flex flex-col">
               <PlaygroundHeader />
