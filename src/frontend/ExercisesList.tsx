@@ -17,7 +17,7 @@ export function ExercisesList({ chapterId, lessonId, exercises }: { chapterId: s
         <span className={`text-lg ${statusIcon(statusFor(exercise))}`}>●</span>
         <Link
           to={`/chapters/${chapterId}/lessons/${lessonId || '0'}/exercises/${index + 1}`}
-          className="text-blue-600 hover:underline"
+          className="text-mumuki-skyblue hover:underline"
         >
           {index + 1}. {exercise.name}
         </Link>

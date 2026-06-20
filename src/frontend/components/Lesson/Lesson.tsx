@@ -46,7 +46,7 @@ const StartLessonButton = ({ chapterId, id }: StartLessonButtonProps) => {
 
   return <Link
     to={`/chapters/${chapterId}/lessons/${id}/exercises/1`}
-    className="inline-block bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded font-semibold">
+    className="inline-block bg-mumuki-rose hover:bg-mumuki-rose-darken text-white px-6 py-3 rounded font-semibold">
     {t("continueLesson")}
   </Link>
 }
