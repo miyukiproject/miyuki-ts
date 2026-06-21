@@ -1,6 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { AnalysisResult, InspectionRule, TestReport } from "yukigo";
-import { CheckIcon, CrossIcon, ErrorIcon, SuccessIcon, WarningIcon } from "./icons/Icons";
+import {
+  CheckIcon,
+  CrossIcon,
+  ErrorIcon,
+  SpinnerIcon,
+  SuccessIcon,
+  WarningIcon,
+} from "./icons/Icons";
 import { usePlayground } from "./hooks/usePlayground";
 
 const testsOk = (tests: TestReport[]) =>
@@ -8,42 +15,51 @@ const testsOk = (tests: TestReport[]) =>
 const expectationsOk = (expectations: AnalysisResult[]) =>
   expectations.every((res) => res.passed);
 
-const colorStyles = {
-  red: {
+type FeedbackStatus = "error" | "warning" | "passed" | "loading";
+
+type StatusStyle = {
+  container: string;
+  text: string;
+};
+
+const colorStyles: Record<FeedbackStatus, StatusStyle> = {
+  error: {
     container: "border-red-500 bg-red-50",
     text: "text-red-700",
   },
-  yellow: {
+  warning: {
     container: "border-yellow-500 bg-yellow-50",
     text: "text-yellow-700",
   },
-  green: {
+  passed: {
     container: "border-green-500 bg-green-50",
     text: "text-green-700",
   },
+  loading: {
+    container: "border-mumuki-skyblue bg-white",
+    text: "text-mumuki-skyblue text-xl",
+  },
 };
 
-type FeedbackColor = "red" | "yellow" | "green";
-
 type ContainerProps = {
-  color: FeedbackColor;
+  status: FeedbackStatus;
   children: React.ReactNode;
 };
 
-const FeedbackContainer = ({ color, children }: ContainerProps) => (
-  <div className={`border-l-4 p-4 mb-6 ${colorStyles[color].container}`}>
+const FeedbackContainer = ({ status, children }: ContainerProps) => (
+  <div className={`border-l-4 p-4 mb-6 ${colorStyles[status].container}`}>
     {children}
   </div>
 );
 type TitleProps = {
   heading: string;
-  color: FeedbackColor;
+  status: FeedbackStatus;
   icon: React.ReactNode;
 };
-const FeedbackTitle = ({ heading, color, icon }: TitleProps) => (
+const FeedbackTitle = ({ heading, status, icon }: TitleProps) => (
   <div className="flex gap-2 items-center mb-2">
     {icon}
-    <h4 className={`${colorStyles[color].text} font-semibold`}>{heading}</h4>
+    <h4 className={`${colorStyles[status].text} font-semibold`}>{heading}</h4>
   </div>
 );
 type MessageProps = {
@@ -58,7 +74,11 @@ const FeedbackMessage = ({ msg }: MessageProps) => (
 const TestReportRow = ({ name, status, message }: TestReport) => (
   <div className="bg-white p-2 flex flex-col">
     <div className="flex gap-2 items-center">
-      {status === "passed" ? <CheckIcon width={20} height={20} /> : <CrossIcon width={20} height={20} />}
+      {status === "passed" ? (
+        <CheckIcon width={20} height={20} />
+      ) : (
+        <CrossIcon width={20} height={20} />
+      )}
       <p>{name}</p>
     </div>
     {message && <p className="ml-8 text-sm text-gray-600">{message}</p>}
@@ -67,11 +87,7 @@ const TestReportRow = ({ name, status, message }: TestReport) => (
 
 const TestReportItem = (report: TestReport) =>
   report.children ? (
-    <>
-      {report.children.map((child, i) => (
-        <TestReportRow key={i} {...child} />
-      ))}
-    </>
+    report.children.map((child, i) => <TestReportRow key={i} {...child} />)
   ) : (
     <TestReportRow {...report} />
   );
@@ -83,14 +99,16 @@ type ErrorFeedbackProps = {
 const ErrorFeedback = ({ error }: ErrorFeedbackProps) => {
   const { t } = useTranslation(["translation", "yukigo"]);
 
-  return <FeedbackContainer color={"red"}>
-    <FeedbackTitle
-      heading={t("errored")}
-      color={"red"}
-      icon={<ErrorIcon width={20} height={20} className="fill-red-700" />}
-    />
-    <FeedbackMessage msg={error.message} />
-  </FeedbackContainer>;
+  return (
+    <FeedbackContainer status={"error"}>
+      <FeedbackTitle
+        heading={t("errored")}
+        status={"error"}
+        icon={<ErrorIcon width={20} height={20} className="fill-red-700" />}
+      />
+      <FeedbackMessage msg={error.message} />
+    </FeedbackContainer>
+  );
 };
 
 type TestsFeedbackProps = {
@@ -100,10 +118,10 @@ type TestsFeedbackProps = {
 const TestsFeedback = ({ results }: TestsFeedbackProps) => {
   const { t } = useTranslation(["translation", "yukigo"]);
   return (
-    <FeedbackContainer color={"red"}>
+    <FeedbackContainer status={"error"}>
       <FeedbackTitle
         heading={t("failed")}
-        color={"red"}
+        status={"error"}
         icon={<ErrorIcon width={20} height={20} className="fill-red-700" />}
       />
       {results.map((report, i) => (
@@ -130,7 +148,11 @@ const ExpectationResult = ({ rule, index, passed }: ExpectationResultProps) => {
 
   return (
     <span className="flex gap-2" key={index}>
-      {passed ? <CheckIcon width={20} height={20} /> : <CrossIcon width={20} height={20} />}
+      {passed ? (
+        <CheckIcon width={20} height={20} />
+      ) : (
+        <CrossIcon width={20} height={20} />
+      )}
       <p>
         {t(`yukigo:${translationKey}`, {
           binding: binding === "*" ? t("yukigo:solution") : binding,
@@ -152,11 +174,13 @@ type ExpectationsFeedbackProps = {
 const ExpectationsFeedback = ({ expectations }: ExpectationsFeedbackProps) => {
   const { t } = useTranslation(["translation", "yukigo"]);
   return (
-    <FeedbackContainer color={"yellow"}>
+    <FeedbackContainer status={"warning"}>
       <FeedbackTitle
         heading={t("failedExpectations")}
-        color={"yellow"}
-        icon={<WarningIcon width={20} height={20} className="fill-yellow-700" />}
+        status={"warning"}
+        icon={
+          <WarningIcon width={20} height={20} className="fill-yellow-700" />
+        }
       />
       <div className="bg-white border rounded p-3 text-sm font-mono">
         {expectations.map(({ rule, passed }, index) => (
@@ -170,19 +194,43 @@ const ExpectationsFeedback = ({ expectations }: ExpectationsFeedbackProps) => {
 const SuccessFeedback = () => {
   const { t } = useTranslation(["translation", "yukigo"]);
 
-  return <FeedbackContainer color={"green"}>
-    <FeedbackTitle
-      heading={t("passed")}
-      color={"green"}
-      icon={<SuccessIcon width={20} height={20} className="fill-green-700" />}
-    />
-  </FeedbackContainer>;
+  return (
+    <FeedbackContainer status={"passed"}>
+      <FeedbackTitle
+        heading={t("passed")}
+        status={"passed"}
+        icon={<SuccessIcon width={20} height={20} className="fill-green-700" />}
+      />
+    </FeedbackContainer>
+  );
+};
+
+const LoadingFeedback = () => {
+  const { t } = useTranslation(["translation", "yukigo"]);
+
+  return (
+    <FeedbackContainer status={"loading"}>
+      <FeedbackTitle
+        heading={t("processingYourSolution")}
+        status={"loading"}
+        icon={
+          <SpinnerIcon
+            width={20}
+            height={20}
+            className="stroke-mumuki-skyblue animate-spin"
+          />
+        }
+      />
+    </FeedbackContainer>
+  );
 };
 
 const Feedback = () => {
   const {
     results: { tests, expectations, error },
+    processing,
   } = usePlayground();
+  if (processing) return <LoadingFeedback />;
   if (!tests && !expectations && !error) return <></>;
 
   if (error) return <ErrorFeedback error={error} />;
@@ -193,6 +241,6 @@ const Feedback = () => {
     return <ExpectationsFeedback expectations={expectations} />;
 
   return <SuccessFeedback />;
-}
+};
 
-export default Feedback
+export default Feedback;
