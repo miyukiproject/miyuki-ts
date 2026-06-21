@@ -4,6 +4,7 @@ import { usePlayground } from "./hooks/usePlayground";
 import { resultStatus } from "./hooks/useYukigo";
 
 interface ProgressItemProps {
+  chapterId: string;
   lessonId: string;
   exerciseId: number;
   status: ProgressStatus;
@@ -13,6 +14,7 @@ interface ProgressItemProps {
 const ProgressItem: React.FC<ProgressItemProps> = ({
   status,
   active,
+  chapterId,
   lessonId,
   exerciseId,
 }) => {
@@ -26,7 +28,7 @@ const ProgressItem: React.FC<ProgressItemProps> = ({
 
   return (
     <Link
-      to={`/lessons/${lessonId || "0"}/exercises/${exerciseId}`}
+      to={`/chapters/${chapterId}/lessons/${lessonId || "0"}/exercises/${exerciseId}`}
       className={`progress-bar-step ${styles[status]} ${
         active ? "active" : ""
       }`}></Link>
