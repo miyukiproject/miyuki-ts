@@ -26,7 +26,7 @@ const Exercise: React.FC = () => {
   const lessonModule = (exerciseModules as any)[`../../exercises/${lessonUrl}.json`];
   const lesson = lessonModule.default;
   const exercise = lesson.exercises[Number(exerciseId) - 1];
-  const nextResource = useNextResource(chapterId, lessonId, exerciseId);
+  const nextResource = useNextResource(Number(chapterId), Number(lessonId), Number(exerciseId));
 
   const [showHint, setShowHint] = useState<boolean>(false);
   // Fake progress
