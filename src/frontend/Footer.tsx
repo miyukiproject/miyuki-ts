@@ -4,7 +4,7 @@ import { Description } from "./components/Description";
 const currentYear = new Date().getFullYear();
 const brandBlueClass = "text-[#3998d8]";
 const brandLinkClass =
-  "inline-flex items-center gap-1.5 underline-offset-2 hover:underline text-[#3998d8] hover:text-[#3998d8]";
+  "inline-flex items-center gap-1.5 underline-offset-2 text-[#3998d8] hover:text-[#3998d8]";
 
 const socialButtonClass =
   "inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#d0e6f6] text-[#d0e6f6] transition-colors hover:border-[#3998d8] hover:bg-transparent hover:text-[#3998d8]";
@@ -32,10 +32,8 @@ const Footer = ({ lesson }: FooterProps) =>{
                 target="_blank"
                 rel="noopener noreferrer"
                 className={brandLinkClass}>
-                <i
-                  className={`fa-solid fa-snowflake inline-flex h-4 w-4 items-center justify-center text-[14px] leading-none ${brandBlueClass}`}
-                  aria-hidden="true"></i>
-                Miyuki
+                ❄️
+                <span className="hover:underline">Miyuki</span>
               </a>
             </div>
             <div className="flex items-center gap-2">
@@ -61,7 +59,7 @@ const Footer = ({ lesson }: FooterProps) =>{
                     maskSize: "14px 14px",
                   }}
                 />
-                Mumuki
+                <span className="hover:underline">Mumuki</span>
               </a>
             </div>
           </div>
