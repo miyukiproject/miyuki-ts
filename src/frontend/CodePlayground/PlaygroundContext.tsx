@@ -8,6 +8,8 @@ import {
 } from "react";
 import { ExerciseResult, PlaygroundView } from "../model/common";
 import { resultStatus, useYukigo } from "../hooks/useYukigo";
+import { ProgressScope, saveExerciseProgress, loadExerciseProgress } from "../helpers/progressStorage";
+import { ProgressState } from "../model/progress";
 
 interface PlaygroundContextType {
   code: string;
@@ -25,6 +27,7 @@ interface PlaygroundContextType {
   submit: () => void;
   reset: () => void;
   isNextVisible: boolean
+  onProgressSaved?: (solution: string, state: ProgressState) => void;
 }
 
 export const PlaygroundContext = createContext<PlaygroundContextType | undefined>(
@@ -39,9 +42,13 @@ const baseResult: ExerciseResult = {
 
 export function PlaygroundProvider({
   exercise,
+  progressScope,
+  onProgressSaved,
   children,
 }: {
   exercise: any;
+  progressScope: ProgressScope;
+  onProgressSaved?: (solution: string, state: ProgressState) => void;
   children: ReactNode;
 }) {
   const isPlayground = useMemo(
@@ -85,6 +92,36 @@ export function PlaygroundProvider({
     reset();
   }, [exercise, reset]);
 
+  useEffect(() => {
+    let active = true;
+
+    void loadExerciseProgress(progressScope).then((savedProgress) => {
+      if (!active || !savedProgress) {
+        return;
+      }
+
+      setCode(savedProgress.solution);
+      setNextVisible(true);
+    }).catch(() => undefined);
+
+    return () => {
+      active = false;
+    };
+  }, [progressScope]);
+
+  const determineProgressState = useCallback(
+    (testsStatus: ReturnType<typeof resultStatus>, expectationResults: { passed: boolean }[] | null): ProgressState => {
+      if (testsStatus !== "passed") {
+        return "error";
+      }
+
+      return expectationResults?.every((result) => result.passed)
+        ? "passed"
+        : "passed_with_warnings";
+    },
+    [],
+  );
+
   const submit = useCallback(() => {
     setProcessing(true);
     setResults(baseResult);
@@ -96,12 +133,27 @@ export function PlaygroundProvider({
       );
       setResults((results) => ({ ...results, tests: testResults }));
 
-      if (resultStatus(testResults) === "passed") {
+      const testsProgressStatus = resultStatus(testResults);
+
+      if (testsProgressStatus === "passed") {
         const expectationResults = runAnalysis(ast, exercise.expectations);
         setResults((results) => ({
           ...results,
           expectations: expectationResults,
         }));
+
+        void saveExerciseProgress(
+          progressScope,
+          code,
+          determineProgressState(testsProgressStatus, expectationResults),
+        );
+        onProgressSaved?.(
+          code,
+          determineProgressState(testsProgressStatus, expectationResults),
+        );
+      } else {
+        void saveExerciseProgress(progressScope, code, "error");
+        onProgressSaved?.(code, "error");
       }
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
@@ -109,6 +161,8 @@ export function PlaygroundProvider({
         ...results,
         error,
       }));
+      void saveExerciseProgress(progressScope, code, "error");
+      onProgressSaved?.(code, "error");
     } finally {
       setTimeout(() => {
         setProcessing(false);
@@ -116,7 +170,7 @@ export function PlaygroundProvider({
       }, 400); // delay artificial para dar la sensacion de carga
       // miyuki is just too fast bro...
     }
-  }, [code, exercise, runTests, runAnalysis]);
+  }, [code, exercise, runTests, runAnalysis, progressScope, determineProgressState]);
 
   const value = useMemo(
     () => ({
