@@ -16,6 +16,15 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+:root {
+  --progress-passed: #10b981; /* green-500 */
+  --progress-pending: #d1d5db; /* gray-300 */
+  --progress-failed: #ef4444; /* red-500 */
+  --progress-error: #7f1d1d; /* red-800-ish */
+  --progress-processing: #60a5fa; /* blue-400 */
+  --progress-active-dot: #3498db; /* accent */
+}
+
 .container,
 .container-fluid,
 .container-xxl,
@@ -178,6 +187,12 @@ code {
   width: stretch;
   height: 0.5rem;
 }
+
+.progress-passed { background-color: var(--progress-passed); }
+.progress-pending { background-color: var(--progress-pending); }
+.progress-failed { background-color: var(--progress-failed); }
+.progress-error { background-color: var(--progress-error); }
+.progress-processing { background-color: var(--progress-processing); }
 
 .progress-bar-step.active::after {
   content: "";
