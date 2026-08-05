@@ -51,7 +51,7 @@ export function PlaygroundProvider({
   const isReading = useMemo(() => exercise.type === "reading", [exercise]);
   const resetView = useCallback(() => (isPlayground ? "console" : "editor"), [isPlayground]);
 
-  const { runTests, runAnalysis } = useYukigo();
+  const { runTests, runAnalysis, parse } = useYukigo();
   const [code, setCode] = useState<string>(exercise.default_content ?? "");
   const [processing, setProcessing] = useState<boolean>(false);
 
@@ -89,7 +89,7 @@ export function PlaygroundProvider({
     setProcessing(true);
     setResults(baseResult);
     try {
-      const { ast, testResults } = runTests(
+      const testResults = runTests(
         code,
         exercise.extra,
         exercise.test,
@@ -97,7 +97,8 @@ export function PlaygroundProvider({
       setResults((results) => ({ ...results, tests: testResults }));
 
       if (resultStatus(testResults) === "passed") {
-        const expectationResults = runAnalysis(ast, exercise.expectations);
+        const cleanAst = parse(code, exercise.extra, false);
+        const expectationResults = runAnalysis(cleanAst, exercise.expectations);
         setResults((results) => ({
           ...results,
           expectations: expectationResults,
@@ -116,7 +117,7 @@ export function PlaygroundProvider({
       }, 400); // delay artificial para dar la sensacion de carga
       // miyuki is just too fast bro...
     }
-  }, [code, exercise, runTests, runAnalysis]);
+  }, [code, exercise, runTests, runAnalysis, parse]);
 
   const value = useMemo(
     () => ({
