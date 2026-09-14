@@ -8,12 +8,14 @@ import { functional } from "../../model/book";
 import { pdep } from "../Book/Book.data";
 import { LessonHeader } from "./LessonHeader";
 import { Heading2 } from "../Title";
+import { useProgress } from "../../contexts/ProgressContext";
 
 const exerciseModules = import.meta.glob("../../../exercises/**/*", { eager: true });
 
 export const Lesson: React.FC = () => {
   const { t } = useTranslation();
   const { lessonId } = useParams();
+  const { bookProgress } = useProgress();
 
   const lessonUrl = functional.lessons[Number(lessonId) - 1];
   const lesson: any = exerciseModules[`../../../exercises/${lessonUrl}.json`];
@@ -27,7 +29,13 @@ export const Lesson: React.FC = () => {
       </Description>
 
       <Heading2>{t("exercises")}</Heading2>
-      <ExercisesList lessonId={lessonId} exercises={lesson.exercises} />
+      <ExercisesList
+        lessonId={lessonId}
+        exercises={lesson.exercises}
+        bookProgress={bookProgress}
+        chapterId={Number(functional.id) || 1}
+        lessonIdNum={Number(lesson.id) || 1}
+      />
 
       <StartLessonButton id={lessonId!}/>
 

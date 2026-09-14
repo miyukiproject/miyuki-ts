@@ -1,0 +1,1 @@
+export type ProgressState = "passed" | "passed_with_warnings" | "error";
