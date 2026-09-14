@@ -19,6 +19,7 @@ const ProgressItem: React.FC<ProgressItemProps> = ({
 }) => {
   const styles: Record<ProgressStatus, string> = {
     passed: "bg-progress-passed",
+    warning: "bg-progress-warning",
     pending: "bg-progress-pending",
     failed: "bg-progress-failed",
     error: "bg-progress-error",
@@ -39,7 +40,7 @@ export const ProgressBar: React.FC<{ items: ProgressItemProps[] }> = ({
 }) => {
   const { exerciseId } = useParams();
   const { results, processing } = usePlayground();
-  const progress = [...items]
+  const progress = [...items];
   const currentIndex = Number(exerciseId) - 1;
   const currentItem = progress[currentIndex];
 
@@ -49,7 +50,11 @@ export const ProgressBar: React.FC<{ items: ProgressItemProps[] }> = ({
       : processing
         ? "processing"
         : results.tests
-          ? resultStatus(results.tests)
+          ? resultStatus(results.tests) === "passed"
+            ? (!results.expectations || results.expectations.length === 0 || results.expectations.every((result) => result.passed))
+              ? "passed"
+              : "warning"
+            : resultStatus(results.tests)
           : currentItem.status;
 
     progress[currentIndex] = {

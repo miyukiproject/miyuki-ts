@@ -1,1 +1,1 @@
-export type ProgressStatus = "passed" | "pending" | "failed" | "processing" | "error"
+export type ProgressStatus = "passed" | "warning" | "pending" | "failed" | "processing" | "error"

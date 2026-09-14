@@ -64,7 +64,17 @@ app.whenReady().then(() => {
   mainWindow.maximize();
   mainWindow.show();
   if (isDev) {
-    mainWindow.loadURL("http://localhost:5173");
+    const loadDevServer = () => {
+      mainWindow.loadURL("http://localhost:5173").catch(() => {
+        setTimeout(loadDevServer, 1000);
+      });
+    };
+    mainWindow.webContents.on("did-fail-load", (_event, errorCode) => {
+      if (errorCode === -102) {
+        setTimeout(loadDevServer, 1000);
+      }
+    });
+    loadDevServer();
     mainWindow.webContents.openDevTools();
   } else if (isPreview) {
     mainWindow.webContents.openDevTools();

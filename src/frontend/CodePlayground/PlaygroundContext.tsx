@@ -115,7 +115,11 @@ export function PlaygroundProvider({
         return "error";
       }
 
-      return expectationResults?.every((result) => result.passed)
+      if (!expectationResults || expectationResults.length === 0) {
+        return "passed";
+      }
+
+      return expectationResults.every((result) => result.passed)
         ? "passed"
         : "passed_with_warnings";
     },

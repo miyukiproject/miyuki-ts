@@ -25,7 +25,7 @@ const exerciseModules = import.meta.glob("../../exercises/**/*", { eager: true }
 
 const progressStatusByState: Record<string, ProgressStatus> = {
   passed: "passed",
-  passed_with_warnings: "passed",
+  passed_with_warnings: "warning",
   error: "error",
 };
 

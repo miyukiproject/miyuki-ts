@@ -17,6 +17,7 @@ module.exports = {
         ,
         /* Progress colors mapped to CSS variables so themes can override them */
         "progress-passed": "var(--progress-passed)",
+        "progress-warning": "var(--progress-warning)",
         "progress-pending": "var(--progress-pending)",
         "progress-failed": "var(--progress-failed)",
         "progress-error": "var(--progress-error)",

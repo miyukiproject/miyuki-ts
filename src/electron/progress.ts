@@ -46,7 +46,7 @@ const documentsDirectory = () => app.getPath("documents");
 const settingsPath = () => join(userDataDirectory(), "progress-settings.json");
 
 const defaultProgressFilePath = () =>
-  join(process.platform === "win32" ? "C:\\" : "/", "Miyuki", "progress.miyuki");
+  join(documentsDirectory(), "Miyuki", "progress.miyuki");
 
 const readSettings = (): ProgressSettings => {
   try {

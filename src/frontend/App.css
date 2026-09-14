@@ -18,6 +18,7 @@ body {
 
 :root {
   --progress-passed: #10b981; /* green-500 */
+  --progress-warning: #eab308; /* yellow-500 */
   --progress-pending: #d1d5db; /* gray-300 */
   --progress-failed: #ef4444; /* red-500 */
   --progress-error: #7f1d1d; /* red-800-ish */
@@ -189,6 +190,7 @@ code {
 }
 
 .progress-passed { background-color: var(--progress-passed); }
+.progress-warning { background-color: var(--progress-warning); }
 .progress-pending { background-color: var(--progress-pending); }
 .progress-failed { background-color: var(--progress-failed); }
 .progress-error { background-color: var(--progress-error); }
