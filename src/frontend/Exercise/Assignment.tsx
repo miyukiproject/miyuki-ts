@@ -13,8 +13,9 @@ type AssignmentProps = {
 
 const Assignment = ({ exercise, showHint, setShowHint }: AssignmentProps) =>{
   const { t } = useTranslation();
+  const exerciseLayout = ((exercise as any).layout || "input_right") as keyof typeof layout.text;
   return (
-    <div className={`exercise-assignment ${layout.text[exercise.layout]}`}>
+    <div className={`exercise-assignment ${layout.text[exerciseLayout]}`}>
       <Description className="mb-4 text-justify">
         {exercise.description}
       </Description>

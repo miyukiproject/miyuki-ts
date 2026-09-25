@@ -1,11 +1,14 @@
 import { useEffect, useRef } from "react";
 import { usePlayground } from "../hooks/usePlayground";
 import Feedback from "../Feedback";
-import { Exercise } from "../model/guide";
 import NextButton from "./NextButton";
 
 type FeedbackAreaProps = {
-  nextExercise: Exercise;
+  nextResource: {
+    name: string;
+    to: string;
+    kind: string;
+  };
 };
 
 const FeedbackArea = ({ nextExercise }: FeedbackAreaProps) => {
@@ -23,7 +26,7 @@ const FeedbackArea = ({ nextExercise }: FeedbackAreaProps) => {
     <div className="mt-8" ref={containerRef}>
       <Feedback />
       {isNextVisible && (
-        <NextButton nextExercise={nextExercise} onClick={reset} />
+        <NextButton nextResource={nextResource} onClick={reset} />
       )}
     </div>
   );
