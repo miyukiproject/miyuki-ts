@@ -1,19 +1,22 @@
 import { usePlayground } from "../hooks/usePlayground";
 import Feedback from "../Feedback";
-import { Exercise } from "../model/guide";
 import NextButton from "./NextButton";
 
 type FeedbackAreaProps = {
-  nextExercise: Exercise;
+  nextResource: {
+    name: string;
+    to: string;
+    kind: string;
+  };
 };
 
-const FeedbackArea = ({ nextExercise }: FeedbackAreaProps) => {
+const FeedbackArea = ({ nextResource }: FeedbackAreaProps) => {
   const { isNextVisible, reset } = usePlayground();
   return (
     <div className="mt-8">
       <Feedback />
       {isNextVisible && (
-        <NextButton nextExercise={nextExercise} onClick={reset} />
+        <NextButton nextResource={nextResource} onClick={reset} />
       )}
     </div>
   );

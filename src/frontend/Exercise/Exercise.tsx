@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
-import { functional } from "../model/book";
+import { functional, chapters } from "../model/book";
 import { ProgressBar } from "../ProgressBar";
 import { Heading1 } from "../components/Title";
 import CodePlayground from "../CodePlayground/CodePlayground";
@@ -13,32 +13,38 @@ import { layout } from "./utils";
 import { PageLayout } from "../components/PageLayout";
 import { pdep } from "../components/Book/Book.data";
 
+import { useNextResource } from "../hooks/useNextResource";
+
 const exerciseModules = import.meta.glob("../../exercises/**/*", { eager: true });
 
 const Exercise: React.FC = () => {
   const { t } = useTranslation();
-  const { lessonId, exerciseId } = useParams();
+  const { chapterId, lessonId, exerciseId } = useParams();
 
-  const lessonUrl = functional.lessons[Number(lessonId) - 1];
-  const lessonModule = exerciseModules[`../../exercises/${lessonUrl}.json`];
+  const chapter = chapters.find(c => c.id === Number(chapterId)) || functional;
+  const lessonUrl = chapter.lessons[Number(lessonId) - 1];
+  const lessonModule = (exerciseModules as any)[`../../exercises/${lessonUrl}.json`];
   const lesson = lessonModule.default;
   const exercise = lesson.exercises[Number(exerciseId) - 1];
-  const nextExercise = lesson.exercises[Number(exerciseId)];
+  const nextResource = useNextResource(Number(chapterId), Number(lessonId), Number(exerciseId));
 
   const [showHint, setShowHint] = useState<boolean>(false);
   // Fake progress
   const progress = lesson.exercises.map((_: any, i: number) => ({
+    chapterId: chapterId,
     lessonId: lessonId,
     exerciseId: i + 1,
     status: i < Number(exerciseId) ? "passed" : "pending",
   }));
   const [fullscreen, setFullscreen] = useState<boolean>(false);
 
+  const exerciseLayout = (exercise?.layout || "input_right") as keyof typeof layout.text;
+
   return (
     <PageLayout
       fullscreen={fullscreen}
       book={pdep}
-      chapter={functional}
+      chapter={chapter}
       lesson={lesson}
       exercise={exercise}
     >
@@ -52,7 +58,7 @@ const Exercise: React.FC = () => {
       <PlaygroundProvider exercise={exercise}>
         {/* TODO: Save the progress? */}
         <ProgressBar items={progress} />
-        <div className={`${layout.container[exercise.layout]} gap-6`}>
+        <div className={`${layout.container[exerciseLayout]} gap-6`}>
           <Assignment
             exercise={exercise}
             setShowHint={setShowHint}
@@ -60,7 +66,7 @@ const Exercise: React.FC = () => {
           />
 
           <div
-            className={`flex flex-col gap-4 rounded ${layout.text[exercise.layout]}`}
+            className={`flex flex-col gap-4 rounded ${layout.text[exerciseLayout]}`}
           >
             <div className="flex flex-col">
               <PlaygroundHeader />
@@ -68,7 +74,7 @@ const Exercise: React.FC = () => {
             </div>
           </div>
         </div>
-        <FeedbackArea nextExercise={nextExercise} />
+        <FeedbackArea nextResource={nextResource} />
       </PlaygroundProvider>
     </PageLayout>
   );
