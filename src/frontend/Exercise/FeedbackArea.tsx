@@ -11,7 +11,7 @@ type FeedbackAreaProps = {
   };
 };
 
-const FeedbackArea = ({ nextExercise }: FeedbackAreaProps) => {
+const FeedbackArea = ({ nextResource }: FeedbackAreaProps) => {
   const { isNextVisible, reset, results } = usePlayground();
   const { tests, expectations, error } = results || {};
   const containerRef = useRef<HTMLDivElement>(null);
