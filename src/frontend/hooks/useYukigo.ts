@@ -1,17 +1,17 @@
 import {
   Analyzer,
-  MulangAdapter,
   Tester,
   Interpreter,
   TestReport,
   AnalysisResult,
+  MulangAdapter,
+  InterpreterConfig,
 } from "yukigo";
-import { AST, Expression, YukigoParser } from "yukigo-ast";
+import { AST, YukigoParser } from "yukigo-ast";
 import { YukigoHaskellParser } from "yukigo-haskell-parser";
-import { InterpreterConfig } from "yukigo/dist/interpreter/components/RuntimeContext";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 
-export const interpreterConfig: InterpreterConfig = {
+export const interpreterConfig: Partial<InterpreterConfig> = {
   lazyLoading: true,
   mutability: false,
   debug: false,
@@ -27,8 +27,26 @@ export const resultStatus = (reports: TestReport[]) =>
 
 export const useYukigo = () => {
   const [parser, setParser] = useState<YukigoParser>(new YukigoHaskellParser());
+  const [cleanParser] = useState<YukigoParser>(
+    new YukigoHaskellParser("", { typecheck: false, includePrims: false }),
+  );
 
-  const evaluate = useCallback((code: string, extra: string, command: string) => {
+  const studentCode = useCallback(
+    (code: string, extra: string): string =>
+      extra ? extra.concat("\n", code) : code,
+    [],
+  );
+
+  const parse = useCallback(
+    (code: string, extra: string, withPrelude = true): AST => {
+      const targetParser = withPrelude ? parser : cleanParser;
+      return targetParser.parse(studentCode(code, extra));
+    },
+    [parser, cleanParser, studentCode],
+  );
+
+  const evaluate = useCallback(
+    (code: string, extra: string, command: string) => {
       const ast = parser.parse(studentCode(code, extra));
       const expression = parser.parseExpression(command);
 
@@ -38,27 +56,26 @@ export const useYukigo = () => {
     [],
   );
 
-  const runTests = useCallback((code: string, extra: string, test: string) => {
-    const ast = parser.parse(studentCode(code, extra));
-    const tester = new Tester(ast, interpreterConfig);
-    const testResults = tester.test(parser.parse(test));
-    return { ast, testResults };
-  }, []);
+  const runTests = useCallback(
+    (code: string, extra: string, test: string) => {
+      const ast = parser.parse(studentCode(code, extra));
+      const tester = new Tester(ast, interpreterConfig);
+      return tester.test(parser.parse(test));
+    },
+    [parser, studentCode],
+  );
 
-  const runAnalysis = useCallback((ast: AST, expectations: unknown[]): AnalysisResult[] => {
+  const runAnalysis = useCallback(
+    (ast: AST, expectations: any[]): AnalysisResult[] => {
       const analyzer = new Analyzer();
       const adapter = new MulangAdapter();
-      const translatedExpectations =
-        expectations?.map((exp) => adapter.translateMulangInspection(exp)) ||
-        [];
+      const translatedExpectations = expectations.map((inspection) =>
+        adapter.translateMulangInspection(inspection),
+      );
       return analyzer.analyze(ast, translatedExpectations);
     },
     [],
   );
-  const studentCode = useCallback((code: string, extra: string): string =>
-      extra ? extra.concat("\n", code) : code,
-    [],
-  );
 
-  return { evaluate, runTests, runAnalysis };
+  return { evaluate, runTests, runAnalysis, parse };
 };
