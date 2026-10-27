@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
-import { functional } from "../model/book";
+import { functional, chapters } from "../model/book";
 import { Heading1 } from "../components/Title";
 import CodePlayground from "../CodePlayground/CodePlayground";
 import { PlaygroundProvider } from "../CodePlayground/PlaygroundContext";
@@ -12,16 +12,22 @@ import { layout } from "./utils";
 import { PageLayout } from "../components/PageLayout";
 import { pdep } from "../components/Book/Book.data";
 import { ProgressBar } from "../ProgressBar";
-import { saveExerciseProgress, StoredBookProgress } from "../helpers/progressStorage";
+import {
+  saveExerciseProgress,
+  StoredBookProgress,
+} from "../helpers/progressStorage";
 import { ProgressStatus } from "../ProgressStatus";
 import { ProgressState } from "../model/progress";
 import { useProgress } from "../contexts/ProgressContext";
+import { useNextResource } from "../hooks/useNextResource";
 
 type SavedChapter = StoredBookProgress["chapters"][number];
 type SavedLesson = SavedChapter["lessons"][number];
 type SavedExercise = SavedLesson["exercises"][number];
 
-const exerciseModules = import.meta.glob("../../exercises/**/*", { eager: true });
+const exerciseModules = import.meta.glob("../../exercises/**/*", {
+  eager: true,
+});
 
 const progressStatusByState: Record<string, ProgressStatus> = {
   passed: "passed",
@@ -31,22 +37,31 @@ const progressStatusByState: Record<string, ProgressStatus> = {
 
 const upsertBookProgress = (
   current: StoredBookProgress | null,
-  scope: { bookId: number; chapterId: number; lessonId: number; exerciseId: number },
+  scope: {
+    bookId: number;
+    chapterId: number;
+    lessonId: number;
+    exerciseId: number;
+  },
   solution: string,
   state: ProgressState,
 ) => {
-  const nextProgress: StoredBookProgress =
-    current ?? { book_id: scope.bookId, chapters: [] };
-  const nextChapter: SavedChapter =
-    nextProgress.chapters.find((chapter) => chapter.chapter_id === scope.chapterId) ?? {
-      chapter_id: scope.chapterId,
-      lessons: [],
-    };
-  const nextLesson: SavedLesson =
-    nextChapter.lessons.find((savedLesson) => savedLesson.lesson_id === scope.lessonId) ?? {
-      lesson_id: scope.lessonId,
-      exercises: [],
-    };
+  const nextProgress: StoredBookProgress = current ?? {
+    book_id: scope.bookId,
+    chapters: [],
+  };
+  const nextChapter: SavedChapter = nextProgress.chapters.find(
+    (chapter) => chapter.chapter_id === scope.chapterId,
+  ) ?? {
+    chapter_id: scope.chapterId,
+    lessons: [],
+  };
+  const nextLesson: SavedLesson = nextChapter.lessons.find(
+    (savedLesson) => savedLesson.lesson_id === scope.lessonId,
+  ) ?? {
+    lesson_id: scope.lessonId,
+    exercises: [],
+  };
 
   const nextExercise: SavedExercise = {
     exercise_id: scope.exerciseId,
@@ -77,24 +92,36 @@ const upsertBookProgress = (
 
 const Exercise: React.FC = () => {
   const { t } = useTranslation();
-  const { lessonId, exerciseId } = useParams();
+  const { chapterId, lessonId, exerciseId } = useParams();
   const { bookProgress, updateProgress } = useProgress();
 
-  const lessonUrl = functional.lessons[Number(lessonId) - 1];
-  const lessonModule = exerciseModules[`../../exercises/${lessonUrl}.json`] as { default: any };
+  const chapter =
+    chapters.find((c) => c.id === Number(chapterId)) || functional;
+  const lessonUrl = chapter.lessons[Number(lessonId) - 1];
+  const lessonModule = (exerciseModules as any)[
+    `../../exercises/${lessonUrl}.json`
+  ];
   const lesson = lessonModule.default;
+
   const exercise = lesson.exercises[Number(exerciseId) - 1];
-  const nextExercise = lesson.exercises[Number(exerciseId)];
+  const nextResource = useNextResource(
+    Number(chapterId),
+    Number(lessonId),
+    Number(exerciseId),
+  );
   const exerciseLayout = exercise.layout as keyof typeof layout.container;
-  const progressScope = {
-    bookId: (pdep as any).id ?? 1,
-    chapterId: functional.id,
-    lessonId: lesson.id,
-    exerciseId: exercise.id,
-  };
+
+  const progressScope = useMemo(
+    () => ({
+      bookId: (pdep as any).id ?? 1,
+      chapterId: functional.id,
+      lessonId: lesson.id,
+      exerciseId: exercise.id,
+    }),
+    [exercise.id, lesson.id],
+  );
 
   const [showHint, setShowHint] = useState<boolean>(false);
-  const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   useEffect(() => {
     if (exercise.type !== "reading") {
@@ -104,12 +131,16 @@ const Exercise: React.FC = () => {
     const chapterIndex = bookProgress?.chapters.findIndex(
       (chapter) => chapter.chapter_id === progressScope.chapterId,
     );
-    const lessonIndex = bookProgress?.chapters[chapterIndex ?? -1]?.lessons.findIndex(
+    const lessonIndex = bookProgress?.chapters[
+      chapterIndex ?? -1
+    ]?.lessons.findIndex(
       (savedLesson) => savedLesson.lesson_id === progressScope.lessonId,
     );
     const exerciseIndex = bookProgress?.chapters[chapterIndex ?? -1]?.lessons[
       lessonIndex ?? -1
-    ]?.exercises.findIndex((saved) => saved.exercise_id === progressScope.exerciseId);
+    ]?.exercises.findIndex(
+      (saved) => saved.exercise_id === progressScope.exerciseId,
+    );
 
     const alreadySaved =
       chapterIndex != null &&
@@ -124,7 +155,9 @@ const Exercise: React.FC = () => {
     }
 
     void saveExerciseProgress(progressScope, "", "passed");
-    updateProgress(upsertBookProgress(bookProgress, progressScope, "", "passed"));
+    updateProgress(
+      upsertBookProgress(bookProgress, progressScope, "", "passed"),
+    );
   }, [bookProgress, exercise.type, progressScope, updateProgress]);
 
   const progress = useMemo(
@@ -132,7 +165,9 @@ const Exercise: React.FC = () => {
       lesson.exercises.map((lessonExercise: any, index: number) => {
         const savedExercise = bookProgress?.chapters
           ?.find((chapter) => chapter.chapter_id === progressScope.chapterId)
-          ?.lessons?.find((savedLesson) => savedLesson.lesson_id === progressScope.lessonId)
+          ?.lessons?.find(
+            (savedLesson) => savedLesson.lesson_id === progressScope.lessonId,
+          )
           ?.exercises?.find((saved) => saved.exercise_id === lessonExercise.id);
 
         return {
@@ -140,17 +175,23 @@ const Exercise: React.FC = () => {
           routeExerciseId: index + 1,
           exerciseId: lessonExercise.id,
           status: savedExercise
-            ? progressStatusByState[savedExercise.state] ?? "pending"
+            ? (progressStatusByState[savedExercise.state] ?? "pending")
             : "pending",
         };
       }),
-    [bookProgress, lesson.exercises, lessonId, progressScope.chapterId, progressScope.lessonId],
+    [
+      bookProgress,
+      lesson.exercises,
+      lessonId,
+      progressScope.chapterId,
+      progressScope.lessonId,
+    ],
   );
 
   return (
     <PageLayout
       book={pdep}
-      chapter={functional as any}
+      chapter={chapter}
       lesson={lesson}
       exercise={exercise}
     >
@@ -169,7 +210,11 @@ const Exercise: React.FC = () => {
             bookProgress,
             progressScope,
             solution,
-            state === "passed" ? "passed" : state === "passed_with_warnings" ? "passed_with_warnings" : "error",
+            state === "passed"
+              ? "passed"
+              : state === "passed_with_warnings"
+                ? "passed_with_warnings"
+                : "error",
           );
           updateProgress(newProgress);
         }}
@@ -191,7 +236,7 @@ const Exercise: React.FC = () => {
             </div>
           </div>
         </div>
-        <FeedbackArea nextExercise={nextExercise} />
+        <FeedbackArea nextResource={nextResource} />
       </PlaygroundProvider>
     </PageLayout>
   );

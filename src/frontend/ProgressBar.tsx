@@ -4,9 +4,9 @@ import { usePlayground } from "./hooks/usePlayground";
 import { resultStatus } from "./hooks/useYukigo";
 
 interface ProgressItemProps {
+  chapterId: string;
   lessonId: string;
   routeExerciseId: number;
-  exerciseId: number;
   status: ProgressStatus;
   active?: boolean;
 }
@@ -14,6 +14,7 @@ interface ProgressItemProps {
 const ProgressItem: React.FC<ProgressItemProps> = ({
   status,
   active,
+  chapterId,
   lessonId,
   routeExerciseId,
 }) => {
@@ -28,10 +29,11 @@ const ProgressItem: React.FC<ProgressItemProps> = ({
 
   return (
     <Link
-      to={`/lessons/${lessonId || "0"}/exercises/${routeExerciseId}`}
+      to={`/chapters/${chapterId}/lessons/${lessonId}/exercises/${routeExerciseId}`}
       className={`progress-bar-step ${styles[status]} ${
         active ? "active" : ""
-      }`}></Link>
+      }`}
+    />
   );
 };
 
@@ -51,7 +53,9 @@ export const ProgressBar: React.FC<{ items: ProgressItemProps[] }> = ({
         ? "processing"
         : results.tests
           ? resultStatus(results.tests) === "passed"
-            ? (!results.expectations || results.expectations.length === 0 || results.expectations.every((result) => result.passed))
+            ? !results.expectations ||
+              results.expectations.length === 0 ||
+              results.expectations.every((result) => result.passed)
               ? "passed"
               : "warning"
             : resultStatus(results.tests)
@@ -64,9 +68,11 @@ export const ProgressBar: React.FC<{ items: ProgressItemProps[] }> = ({
     };
   }
 
-  return <div className="flex gap-0.5 mb-6">
-    {progress.map((item, i) => (
-      <ProgressItem key={i} {...item} />
-    ))}
-  </div>;
+  return (
+    <div className="flex gap-0.5 mb-6">
+      {progress.map((item, i) => (
+        <ProgressItem key={i} {...item} />
+      ))}
+    </div>
+  );
 };

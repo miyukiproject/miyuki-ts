@@ -14,6 +14,5 @@ export function statusIcon(status: SubmissionStatus) {
         return "text-gray-400";
     }
   })();
-  console.log(`[statusIcon] status: ${status} -> class: ${colorClass}`);
   return colorClass;
-};
+}
