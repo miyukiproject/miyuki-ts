@@ -1,33 +1,60 @@
-import { shell, dialog } from 'electron';
+import { dialog, shell, type MenuItemConstructorOptions } from "electron";
 
-export const menuTemplate = [
+type MenuHandlers = {
+    onOpenProgressFile: () => Promise<void>;
+    onCreateProgressFile: () => Promise<void>;
+};
+
+export const createMenuTemplate = ({ onOpenProgressFile, onCreateProgressFile }: MenuHandlers): MenuItemConstructorOptions[] => [
     {
-        label: 'Ayuda',
+        label: "Archivo",
         submenu: [
             {
-                label: 'Sobre Miyuki',
+                label: "Seleccionar progreso",
                 click: () => {
-                    dialog.showMessageBox({type: "info", title: "Sobre Miyuki", message: `Miyuki es un proyecto colaborativo y de código abierto para que puedas instalar una versión minimalista del laboratorio de Mumuki en tu computadora.`})
-                }
+                    void onOpenProgressFile();
+                },
             },
             {
-                label: 'Licencia',
+                label: "Nuevo progreso",
                 click: () => {
-                    shell.openExternal('https://github.com/miyukiproject/miyuki/blob/main/LICENSE');
-                }
+                    void onCreateProgressFile();
+                },
+            },
+        ],
+    },
+    {
+        label: "Ayuda",
+        submenu: [
+            {
+                label: "Sobre Miyuki",
+                click: () => {
+                    dialog.showMessageBox({
+                        type: "info",
+                        title: "Sobre Miyuki",
+                        message:
+                            "Miyuki es un proyecto colaborativo y de código abierto para que puedas instalar una versión minimalista del laboratorio de Mumuki en tu computadora.",
+                    });
+                },
             },
             {
-                label: 'Reporte de errores',
+                label: "Licencia",
                 click: () => {
-                    shell.openExternal('https://github.com/miyukiproject/miyuki/issues');
-                }
+                    shell.openExternal("https://github.com/miyukiproject/miyuki/blob/main/LICENSE");
+                },
             },
             {
-                label: 'Unite a nuestra comunidad en discord',
+                label: "Reporte de errores",
                 click: () => {
-                    shell.openExternal('https://discord.gg/Ak4ee7fcSM');
-                }
-            }
-        ]
-    }
+                    shell.openExternal("https://github.com/miyukiproject/miyuki/issues");
+                },
+            },
+            {
+                label: "Unite a nuestra comunidad en discord",
+                click: () => {
+                    shell.openExternal("https://discord.gg/Ak4ee7fcSM");
+                },
+            },
+        ],
+    },
 ];

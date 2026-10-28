@@ -41,7 +41,7 @@ export const Chapter = () => {
   return (
     <PageLayout book={pdep} chapter={chapter}>
       <ChapterHeader id={chapter.id} name={chapter.name} description={chapter.description} />
-      <LessonsList lessons={lessons} />
+      <LessonsList chapterId={chapter.id} lessons={lessons} />
       <AppendixLink chapterId={chapter.id} />
     </PageLayout>
   );
